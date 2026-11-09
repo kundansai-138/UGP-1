@@ -1,195 +1,276 @@
-# Running S0, S4 and the node-local cases
+# Running
 
-Set up first: [XCOMPACT3D_SETUP.md](XCOMPACT3D_SETUP.md) and [SPOD_SETUP.md](SPOD_SETUP.md).
-Scripts live in `~/ugp/tools` (`scripts/ugp-tools` here) and `~/spod-dev` (`spod/node-local` here).
+Build everything first: [XCOMPACT3D_SETUP.md](XCOMPACT3D_SETUP.md) and [SPOD_SETUP.md](SPOD_SETUP.md).
+Run every command from the repository folder, in a shell where the environment is loaded:
+
+```bash
+. scripts/env.sh
+```
+
+Your own results are written under `runs/` in the repository.
 
 ## 0. Before you start
 
-- **Machines.** `~/ugp/tools/hostfile` lists csews160–167 (writer machines), `hostfile_spod`
-  lists csews168–171 (SPOD machines). The scripts start ranks with MPICH's `mpirun -f <hostfile>`
-  and log in to each machine with `ssh` (no password), so passwordless SSH between all machines
-  must work. Check that nobody else is using them:
-  `bash ~/spod-dev/tools/probe_nodes.sh 160 171` (shows CPU, memory, load and logged-in users).
-- **One case at a time.** All machines share one 1 GbE network. When two full-size runs overlapped,
-  both slowed down by about 50 %.
-- **Disk.** Home is a shared 50 GB. Each SPOD mode file is 1.75 GB at 301³ and the old reader
-  writes 5 per run. Use `case_s4.sh` (deletes them after each run) rather than `run_S4.sh`
-  (keeps them).
-- **Long runs.** Start them with `nohup setsid … &` so they keep running after you log out.
+**Machines.** Two host files list the machines, one `name:slots` per line:
 
-## 1. S0: the solver alone (baseline)
+| File | Used for |
+|---|---|
+| `scripts/hostfile` | Xcompact3d; also SPOD when it runs on the same machines |
+| `scripts/hostfile_spod` | SPOD when it runs on separate machines |
 
-`basecase.sh` runs the case with zero snapshots under Intel APS: 192 ranks (24 per machine),
-`ivisu = 0`, 2 runs. It uses the plain MPI build `~/ugp/src/x3d_lab/xcompact3d`, which is not in
-this repository.
+They contain the machines the results were measured on (8 in `hostfile`, 4 in `hostfile_spod`);
+replace them with yours. Every machine must see the repository at the same path and accept
+password-free SSH from the others.
+
+**Network interface.** MPI and SST must use the same network interface on every machine. The
+scripts use `eno1`; if your interface has another name (see `ip -o -4 addr`), add `IFACE=<name>`
+to every command below.
+
+**Profiling.** The run scripts profile both programs with Intel APS (part of Intel oneAPI VTune),
+loaded from `/opt/intel/oneapi/vtune/2025.7/env/vars.sh`. If it is installed elsewhere, set
+`APS_ENV=<path>/env/vars.sh`. Without it, add `APS=0` to the commands.
+
+**One case at a time.** All machines share the network, and Xcompact3d uses it heavily. Two large
+cases at the same time slow each other down by about 50 %.
+
+**Disk space.** At 301³ every SPOD mode file is 1.75 GB and each run writes 5 of them. The run
+scripts delete them at the end of each run unless told otherwise (`KEEP_SPOD`, `KEEP_MODES`).
+
+**Long runs.** A 301³ case takes about 1.5–2 hours. Start long runs with `nohup setsid … &` so they
+keep running after you log out (see section 4).
+
+## 1. Correctness test on one machine
+
+`spod/node-local/run_compare.sh` runs Xcompact3d on a 65³ grid (2 × 4 ranks) on the machine you are
+logged in to. It streams the snapshots to three SPOD runs at the same time: the old reader on 4 ranks,
+and the node-local reader on 4 and on 5 ranks. All three receive the same snapshots, so their
+results must agree.
 
 ```bash
-bash ~/ugp/tools/basecase.sh
+bash spod/node-local/run_compare.sh
 ```
 
-The S0 of 4 November ran without APS's imbalance barrier, while all S4 runs used
-`APS_IMBALANCE_TYPE=2`. Re-run S0 with the same APS settings before comparing step times.
+Expected end of the output: `SAME RESULTS` twice and `RESULT: PASS`. The energies are identical and
+the modes agree to about 1e-14 (each mode is compared after removing its arbitrary phase). It takes
+about a minute and writes about 100 MB to `runs/compare/`.
 
-## 2. S4: streaming with the old reader (`case_s4.sh`)
+Options: `N` (grid, default 65), `PROW`, `PCOL` (Xcompact3d grid, default 2 × 4), `ILAST`, `IOUTPUT`,
+`NDFT`, `OVERLAP` (fraction), `K`, `NSAVE`, `NP_OLD`, `NP_NL` (SPOD ranks, default `"4 5"`). Runs
+that would write more than 1 GB or need more than 8 GB of memory stop before starting, unless you
+add `ALLOW_BIG=1`.
 
-What one case does: fresh run folder from `~/ugp/runs/testcase_adios` (`ilast 150`, `ioutput 5`,
-no restart files, one line per step) → `meta.txt` with the exact setup → for each repeat: start
-the per-machine samplers, start Xcompact3d (under APS and the wait-timing library), wait for
-`data.sst`, start SPOD, wait for both, write the APS reports, delete the mode files → summary →
-wait analysis.
+## 2. Small test on two machines
 
-### Options (environment variables)
+Before running the full cases, test the multi-machine runs on a 65³ grid. Make a host file with
+two of your machines (example names):
+
+```bash
+printf 'machineA:24\nmachineB:24\n' > runs/test_hosts
+```
+
+**Node-local reader** (about 1 minute): 8 Xcompact3d ranks and 2 SPOD ranks on each machine, 15
+steps with a snapshot every step:
+
+```bash
+GRID=65 ILAST=15 IOUTPUT=1 APS=0 WPPN=8 RPPN=2 WPIN=0-7 RPIN=20-21 \
+  WHOSTS=runs/test_hosts RHOSTS=runs/test_hosts KEEP_SPOD=1 \
+  bash spod/node-local/tools/run_S4_nl.sh
+```
+
+In `run1/spod_ts.log` of the new folder under `runs/S4_nl/`, the reader lists, for each machine,
+the Xcompact3d ranks it reads, followed by `Node-local layout: permutation check passed`.
+
+**Old reader** (about 1 minute): the old reader has its grid built in, so this test uses its 65³
+variant and a copy of the case with a 65³ grid:
+
+```bash
+SRC="spod/adios2-old/Streaming SPOD/streamingSPODModule.F90.65grid" bash spod/adios2-old/build.sh
+cp -r case/testcase_adios runs/case65
+sed -i -E 's/^(n[xyz]\s*=\s*)[0-9]+/\165/' runs/case65/input.i3d
+CASE=$PWD/runs/case65 ILAST=45 IOUTPUT=5 SPOD_NDFT=4 SPOD_OVERLAP=2 APS=0 WPPN=8 RPPN=2 \
+  WPIN=0-7 RPIN=20-21 WHOSTS=runs/test_hosts RHOSTS=runs/test_hosts KEEP_SPOD=1 \
+  bash scripts/case_s4.sh
+bash spod/adios2-old/build.sh              # back to the 301^3 reader for the full cases
+```
+
+`ILAST=45 IOUTPUT=5` gives the 10 snapshots this variant expects; `SPOD_NDFT=4 SPOD_OVERLAP=2`
+tells the script its DFT settings.
+
+Both tests should end with `run1: writer rc 0, SPOD rc 0` in their output.
+
+## 3. Full cases (301³)
+
+### What one case does
+
+`scripts/case_s4.sh` (old reader) and `spod/node-local/tools/run_S4_nl.sh` (node-local reader) work
+the same way:
+
+1. Check the settings, the programs, the host files and the CPU lists.
+2. Make a new run folder `runs/<RUNROOT>/S4_r<SPOD machines>x<SPOD ranks per machine>_<time>`, copy
+   the case into it and set `ilast`, `ioutput`, one output line per step and no restart files.
+3. Write `meta.txt`: programs with checksums, launch commands, settings, every machine's hardware
+   and load.
+4. For each repeat: start a sampler on every machine (CPU, memory, network once per second), start
+   Xcompact3d, wait for the SST contact file `data.sst`, start SPOD, wait for both to finish, write
+   the APS reports, then delete the mode files (unless `KEEP_SPOD`/`KEEP_MODES` say otherwise).
+5. Summarise all repeats (`summary.txt`).
+6. Analyse how long SPOD waited, read and computed per snapshot (`wait_summary.txt`).
+
+`run_S4_nl.sh` also gives the reader Xcompact3d's processor grid and stops the run if Xcompact3d's
+log shows a different grid.
+
+### Options
+
+Set them in front of the command, for example `RPPN=4 bash scripts/case_s4.sh`.
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `WHOSTS`, `RHOSTS` | `hostfile`, `hostfile_spod` | machines for Xcompact3d and SPOD |
-| `WPPN`, `RPPN` | 24, 12 | ranks per machine for Xcompact3d and SPOD |
-| `WPIN`, `RPIN` | none | CPU lists for `taskset -c`, e.g. `0-19` and `20-23` |
-| `REPEATS` | 1 | runs per case |
-| `ILAST`, `IOUTPUT` | 150, 5 | steps and snapshot interval |
-| `APS`, `APS_SPOD` | 1, 1 | Intel APS on the solver and on SPOD |
-| `WAIT`, `WAIT_WRITER` | 1, 1 | per-call timing of `begin_step`/`end_step` (LD_PRELOAD library) |
-| `KEEP_SPOD`, `KEEP_MODES` | 0, 0 | keep the spectrum (`KEEP_SPOD=1`) and the first N modes of run 1 |
-| `RUNROOT` | `~/ugp/runs/S4` | where the run folder is created |
+| `WHOSTS`, `RHOSTS` | `scripts/hostfile`, `scripts/hostfile_spod` | machines for Xcompact3d and for SPOD |
+| `WPPN`, `RPPN` | 24, 12 | ranks per machine for Xcompact3d and for SPOD |
+| `WPIN`, `RPIN` | none | CPUs each rank may use (`taskset -c`), for example `0-19` and `20-23` |
+| `REPEATS` | 1 | runs of the same case |
+| `ILAST`, `IOUTPUT` | 150, 5 | number of steps and steps between snapshots |
+| `APS`, `APS_SPOD` | 1, 1 | Intel APS on Xcompact3d and on SPOD |
+| `WAIT`, `WAIT_WRITER` | 1, 1 | time every snapshot hand-over (needed for `wait_summary.txt`) |
+| `KEEP_SPOD`, `KEEP_MODES` | 0, 0 | `KEEP_SPOD=1` keeps the energy spectrum; `KEEP_MODES=N` also keeps the first N modes |
+| `RUNROOT` | `runs/S4` (old), `runs/S4_nl` (node-local) | where the run folder is created |
+| `IFACE` | `eno1` | network interface for MPI and SST |
+| `GRID` | none | node-local script only: `nx = ny = nz = GRID` for tests |
+| `RUN_TIMEOUT` | 14400 | node-local script only: seconds before each launch is stopped |
 
-### The cases that were run
-
-```bash
-# separate machines, 192 Xcompact3d ranks, 48 / 32 / 16 SPOD ranks
-RPPN=12 bash ~/ugp/tools/case_s4.sh
-RPPN=8  bash ~/ugp/tools/case_s4.sh
-RPPN=4  bash ~/ugp/tools/case_s4.sh
-
-# co-located: 20 Xcompact3d + 4 SPOD ranks on each of csews160-167
-WPPN=20 RPPN=4 RHOSTS=~/ugp/tools/hostfile WPIN=0-19 RPIN=20-23 RUNROOT=~/ugp/runs/S4_coloc \
-  bash ~/ugp/tools/case_s4.sh
-
-# separate, 160 Xcompact3d ranks (20 per machine) and 32 SPOD ranks (8 per machine)
-WPPN=20 RPPN=8 WPIN=0-19 RUNROOT=~/ugp/runs/S4_sep160 bash ~/ugp/tools/case_s4.sh
-```
-
-Add `KEEP_SPOD=1 KEEP_MODES=0` to keep each run's energy spectrum. The run folder is named
-`S4_r<SPOD machines>x<SPOD ranks per machine>_<date>_<time>`.
-
-## 3. S4 with the node-local reader (`run_S4_nl.sh`)
-
-`~/spod-dev/tools/run_S4_nl.sh` is `case_s4.sh` with the node-local reader. It takes the same
-options and adds three things: it gives the reader Xcompact3d's processor grid (computed with
-2decomp's own rule) and stops the run if Xcompact3d's log shows a different grid; it passes the
-reader's settings as environment variables (overlap as a fraction, 5 saved modes like the old
-reader); and it limits each launch to `RUN_TIMEOUT` seconds (default 4 h).
+### Old reader
 
 ```bash
-# co-located, same layout as S4_coloc
-WPPN=20 RPPN=4 WHOSTS=~/ugp/tools/hostfile RHOSTS=~/ugp/tools/hostfile WPIN=0-19 RPIN=20-23 \
-  RUNROOT=~/spod-dev/runs/S4_coloc_nl KEEP_SPOD=1 KEEP_MODES=0 bash ~/spod-dev/tools/run_S4_nl.sh
+# Xcompact3d 24 per machine on hostfile (192 ranks); SPOD on hostfile_spod with 12, 8 or 4 per machine
+RPPN=12 KEEP_SPOD=1 bash scripts/case_s4.sh
+RPPN=8  KEEP_SPOD=1 bash scripts/case_s4.sh
+RPPN=4  KEEP_SPOD=1 bash scripts/case_s4.sh
 
-# separate, same layout as S4_sep160
-WPPN=20 RPPN=8 WPIN=0-19 WHOSTS=~/ugp/tools/hostfile RHOSTS=~/ugp/tools/hostfile_spod \
-  RUNROOT=~/spod-dev/runs/S4_sep_nl KEEP_SPOD=1 KEEP_MODES=0 bash ~/spod-dev/tools/run_S4_nl.sh
+# same machines: 20 Xcompact3d ranks on CPUs 0-19 and 4 SPOD ranks on CPUs 20-23 of each hostfile machine
+WPPN=20 RPPN=4 RHOSTS=scripts/hostfile WPIN=0-19 RPIN=20-23 RUNROOT=runs/S4_coloc KEEP_SPOD=1 \
+  bash scripts/case_s4.sh
 
-# quick 65^3 check of the whole chain (about 3 minutes)
-GRID=65 ILAST=15 IOUTPUT=1 WPPN=20 RPPN=4 WHOSTS=~/ugp/tools/hostfile RHOSTS=~/ugp/tools/hostfile \
-  WPIN=0-19 RPIN=20-23 RUNROOT=~/spod-dev/runs/quick65_nl bash ~/spod-dev/tools/run_S4_nl.sh
+# separate machines: 20 Xcompact3d ranks per hostfile machine (160), 8 SPOD ranks per hostfile_spod machine (32)
+WPPN=20 RPPN=8 WPIN=0-19 RUNROOT=runs/S4_sep160 KEEP_SPOD=1 bash scripts/case_s4.sh
 ```
 
-In `run1/spod_ts.log` the reader prints which Xcompact3d ranks each machine reads and
-`Node-local layout: permutation check passed`.
+### Node-local reader
 
-## 4. Everything in one queue (`queue_S4.sh`)
+```bash
+# same machines, same layout as S4_coloc above
+WPPN=20 RPPN=4 WHOSTS=scripts/hostfile RHOSTS=scripts/hostfile WPIN=0-19 RPIN=20-23 \
+  RUNROOT=runs/S4_coloc_nl KEEP_SPOD=1 bash spod/node-local/tools/run_S4_nl.sh
 
-`~/spod-dev/tools/queue_S4.sh` runs the cases one after another, each with `REPEATS=1` and
+# separate machines, same layout as S4_sep160 above
+WPPN=20 RPPN=8 WPIN=0-19 WHOSTS=scripts/hostfile RHOSTS=scripts/hostfile_spod \
+  RUNROOT=runs/S4_sep160_nl KEEP_SPOD=1 bash spod/node-local/tools/run_S4_nl.sh
+```
+
+The CPU lists `0-19` and `20-23` fit 24-thread machines; check yours with `lscpu -e`.
+
+## 4. All five cases in one queue
+
+`spod/node-local/tools/queue_S4.sh` runs these cases one after another, with `REPEATS=1` and
 `KEEP_SPOD=1 KEEP_MODES=0`:
 
-| # | Case | Script |
-|---|---|---|
-| 0 | compare saved 301³ modes, then delete them (specific to 9 Nov; skip with `ONLY`) | – |
-| 1 | `r4x4`, old reader | `case_s4.sh RPPN=4` |
-| 2 | co-located, old reader | `case_s4.sh` |
-| 3 | co-located, node-local | `run_S4_nl.sh` |
-| 4 | separate 160, old reader | `case_s4.sh` |
-| 5 | separate 160, node-local | `run_S4_nl.sh` |
+| # | Case | Script | Results |
+|---|---|---|---|
+| 1 | separate machines, 192 + 16 ranks, old reader | `scripts/case_s4.sh` | `runs/S4_sep192` |
+| 2 | same machines, 160 + 32 ranks, old reader | `scripts/case_s4.sh` | `runs/S4_coloc` |
+| 3 | same machines, 160 + 32 ranks, node-local reader | `run_S4_nl.sh` | `runs/S4_coloc_nl` |
+| 4 | separate machines, 160 + 32 ranks, old reader | `scripts/case_s4.sh` | `runs/S4_sep160` |
+| 5 | separate machines, 160 + 32 ranks, node-local reader | `run_S4_nl.sh` | `runs/S4_sep160_nl` |
+
+All five take about 9.5 hours. Start the queue so that it keeps running after you log out:
 
 ```bash
-# start on csews160 (keeps running after you log out)
-ONLY="1 2 3 4 5" nohup setsid bash ~/spod-dev/tools/queue_S4.sh > /dev/null 2>&1 < /dev/null &
-
-# progress: one line per case start/end; full output per case in ~/spod-dev/runs/queue_S4/
-tail -f ~/spod-dev/runs/queue_S4.log
+nohup setsid bash spod/node-local/tools/queue_S4.sh > /dev/null 2>&1 < /dev/null &
 ```
 
-For 2 repeats, change `REPEATS=1` to `REPEATS=2` in `COMMON=(…)` at the top of the script
-(not while it is running). The 9 November queue took about 9.5 hours.
-
-### Stopping a queue or a case
+Only some cases, for example 3 and 5:
 
 ```bash
-kill $(cat ~/spod-dev/runs/queue_S4.pid)                 # the queue (no new case starts)
-pkill -u $USER -f '[r]un_S4|[c]ase_s4'                   # the running case script
-for h in csews{160..171}; do ssh -n $h "pkill -u \$USER -f '[x]compact3d|[s]treamingSPOD|[s]pod_nl|[h]ydra_pmi_proxy'"; done
-touch <run folder>/run1/.stop                            # ends the per-machine samplers
-for h in csews{160..171}; do echo "$h: $(ssh -n $h "pgrep -u \$USER -c -f '[x]compact3d|[s]treamingSPOD|[s]pod_nl|[h]ydra_pmi'")"; done   # all 0
+ONLY="3 5" nohup setsid bash spod/node-local/tools/queue_S4.sh > /dev/null 2>&1 < /dev/null &
 ```
 
-The `[x]compact3d` form matches the programs but not the `pkill` command itself.
-
-## 5. Correctness tests
-
-**One machine, three readers on one stream** (`~/spod-dev/run_compare.sh`): Xcompact3d at 65³
-(2 × 4 ranks) streams to the old reader (4 ranks) and the node-local reader (4 and 5 ranks) at the
-same time, then the outputs are compared. Options: `N`, `PROW`, `PCOL`, `ILAST`, `IOUTPUT`, `NDFT`,
-`OVERLAP`, `K`, `NSAVE`, `NP_OLD`, `NP_NL`. A size guard stops runs over 1 GB of output or 8 GB of
-memory unless `ALLOW_BIG=1`.
+Progress, one line per case start and end:
 
 ```bash
-bash ~/spod-dev/run_compare.sh      # expect: SAME RESULTS ... RESULT: PASS
+tail -f runs/queue_S4.log
 ```
 
-Result on 8 November: energies identical, modes equal to about 1e-14 after removing the arbitrary
-phase, for both rank counts.
+The full output of each case is in `runs/queue_S4/<number>_<case>.log`. For 2 repeats per case,
+change `REPEATS=1` to `REPEATS=2` in the `COMMON=(…)` line of the script before starting it.
+
+## 5. Watching and stopping a run
+
+Follow a running case:
+
+```bash
+tail -f runs/S4_coloc/S4_*/run1/x3d_ts.log
+```
+
+See which MPI ranks run on which machine:
+
+```bash
+bash spod/node-local/tools/rank_map.sh scripts/hostfile
+```
+
+Stop everything (queue, case script, programs on all machines, samplers):
+
+```bash
+kill $(cat runs/queue_S4.pid)                     # the queue, if you started one
+pkill -u $USER -f '[c]ase_s4.sh|[r]un_S4_nl.sh'   # the case script
+for h in $(cut -d: -f1 scripts/hostfile scripts/hostfile_spod); do
+  ssh -n $h "pkill -u \$USER -f '[x]compact3d|[s]treamingSPOD|[s]pod_nl|[h]ydra_pmi_proxy'"
+done
+touch <run folder>/run1/.stop                     # ends the per-machine samplers
+```
+
+The `[x]compact3d` form matches the programs but not the `pkill` command itself. Check that nothing
+is left (every machine should show 0):
+
+```bash
+for h in $(cut -d: -f1 scripts/hostfile scripts/hostfile_spod); do
+  echo "$h: $(ssh -n $h "pgrep -u \$USER -c -f '[x]compact3d|[s]treamingSPOD|[s]pod_nl|[h]ydra_pmi'")"
+done
+```
+
+These commands stop programs by name on the listed machines. Do not run other programs called
+`xcompact3d` or `streamingSPOD` there at the same time.
 
 ## 6. What a run folder contains
 
 | File | Contents |
 |---|---|
-| `summary.txt` / `.csv` | total time, start-up, median step, extra time per snapshot step, peak memory |
-| `wait_summary.txt`, `wait_steps.csv`, `bursts.csv` | SPOD wait / read / compute per snapshot, writer hand-off, queue check |
-| `meta.txt` | binaries with md5, launch commands, settings, machines |
-| `aps_report_*.html` | full APS report |
-| `run1/x3d_ts.log`, `run1/spod_ts.log` | time-stamped output of both programs |
-| `run1/aps_report.txt`, `run1/aps_spod_report.txt`, `run1/aps_*mpi_*.txt` | APS summaries, MPI per function and per rank |
-| `run1/node_<host>.csv` | CPU busy, memory, network bytes, once per second |
-| `run1/wait/*.csv` | every `begin_step` / `end_step` call of every rank |
-| `run1/spod/EnegySpectra.txt` | the SPOD energy spectrum (with `KEEP_SPOD=1`) |
+| `summary.txt`, `summary.csv` | total time, start-up time, median time per step, extra time of a snapshot step, slowest step, peak memory |
+| `wait_summary.txt`, `wait_steps.csv`, `bursts.csv` | SPOD wait / read / compute per snapshot, Xcompact3d hand-over time, whether the 2-snapshot queue was enough |
+| `meta.txt` | programs with checksums, launch commands, settings, machines |
+| `aps_report_*.html` | full APS report, to open in a browser |
+| `run1/x3d_ts.log`, `run1/spod_ts.log` | output of both programs, each line with its time |
+| `run1/aps_report.txt`, `run1/aps_spod_report.txt` | APS summaries of Xcompact3d and SPOD |
+| `run1/aps_mpi_functions.txt`, `run1/aps_mpi_per_rank.txt` (and `aps_spod_…`) | time in each MPI function and per rank |
+| `run1/node_<machine>.csv` | CPU busy, memory used, network bytes received and sent, once per second |
+| `run1/wait/*.csv` | every snapshot hand-over of every rank |
+| `run1/spod/EnegySpectra.txt` | SPOD energy spectrum (with `KEEP_SPOD=1`) |
 
-How the timings are measured: step times from the time stamps between `Time step = N` lines;
-SPOD's *wait* = time inside `adios2_begin_step`, *read* = until `adios2_end_step` returns (the data
-moves here), *compute* = until the next `begin_step`.
+How the times are measured:
+
+- **Time per step:** the time between consecutive `Time step = N` lines in `x3d_ts.log`, median over
+  steps without a snapshot.
+- **SPOD wait:** time spent inside `adios2_begin_step`, waiting for the next snapshot.
+- **SPOD read:** from `adios2_begin_step` returning until `adios2_end_step` returns; the data moves here.
+- **SPOD compute:** from `adios2_end_step` returning until the next `adios2_begin_step`.
 
 ## 7. Analysis tools
 
 ```bash
-# reader/writer wait for several cases side by side
-python3 ~/ugp/tools/wait_analysis.py ~/ugp/runs/S4_coloc/S4_* ~/spod-dev/runs/S4_coloc_nl/S4_*
+# wait / read / compute of several runs side by side
+python3 scripts/wait_analysis.py runs/S4_coloc/S4_* runs/S4_coloc_nl/S4_*
 
-# network MB/s per machine and second (1 GbE = 125 MB/s)
-python3 ~/spod-dev/tools/net_rates.py ~/ugp/runs/S4_coloc/S4_r8x4_*
+# network MB/s per machine and second (1 Gb/s Ethernet carries at most 125 MB/s)
+python3 spod/node-local/tools/net_rates.py runs/S4_coloc/S4_*
 
-# compare two runs' spectra and modes (needs KEEP_SPOD=1, KEEP_MODES>=1)
-python3 ~/spod-dev/tools/compare_spod_outputs.py RUN_A/run1/spod RUN_B/run1/spod
+# energies and modes of two runs (needs KEEP_SPOD=1 and KEEP_MODES of 1 or more)
+python3 spod/node-local/tools/compare_spod_outputs.py RUN_A/run1/spod RUN_B/run1/spod
 ```
-
-Watching a run: `tail -f <run folder>/run1/x3d_ts.log`, and
-`bash ~/spod-dev/tools/rank_map.sh ~/ugp/tools/hostfile` to see which ranks run on which machine.
-
-## 8. Things learned the hard way
-
-- `run_S4.sh` keeps all SPOD outputs; a queue of them would have filled the 50 GB home.
-- Two full-size runs at the same time slow each other by about 50 % through the shared network,
-  even on different machines.
-- The stop commands match programs by name on the listed machines; don't run other programs
-  called `xcompact3d` or `streamingSPOD` there at the same time.
-- The old reader's settings are compiled in (always 5 modes); the node-local reader reads them
-  from the environment.
-- HPC2013 compute nodes have no route to the CSE lab network, so SST between csews and HPC compute
-  nodes needs a route from the HPC admins or a relay through an HPC login node.

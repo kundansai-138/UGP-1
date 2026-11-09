@@ -1,32 +1,34 @@
 #!/bin/bash
 # =====================================================================
-# build.sh - build both SPOD readers in ~/spod-dev/build (re-run after every source edit).
+# build.sh - build both SPOD readers of this folder (re-run after every source edit).
 #
-#   build/spod_old/spod_old  from src/spod_old.F90 (reader S4 uses)
+#   build/spod_old/spod_old  from src/spod_old.F90 (copy of the old ADIOS2 reader)
 #   build/spod_nl/spod_nl    from src/spod_nl.F90  (node-local reader)
-# Both get the same env-variable patch (tools/patch_env_overrides.py) and the same
-# flags and libraries as ~/ugp/build/spod-adios2. Also runs the stand-alone
-# node-local mapping test (plain gfortran).
-# Usage: bash build.sh [old|nl|map]...   (default: map old nl)
+# Both get the same environment-variable patch (tools/patch_env_overrides.py) and the same
+# compiler flags and libraries as spod/adios2-old/build.sh. It first runs the stand-alone
+# node-local mapping test (plain Fortran, no MPI).
+# Needs: scripts/env.sh (ADIOS2, FFTW, PETSc and SLEPc under UGP_DEPS).
+# Usage: bash spod/node-local/build.sh [map|old|nl]...   (default: map old nl)
 # =====================================================================
 set -euo pipefail
-D=$HOME/spod-dev
-. "$D/env.sh"
-A2MOD=$UGP/install/include/adios2/fortran
-[[ -f $A2MOD/adios2.mod ]] || { echo "STOP: adios2.mod not in $A2MOD"; exit 1; }
-[[ -f $SLEPC_DIR/$PETSC_ARCH/include/slepcsvd.mod ]] || { echo "STOP: SLEPc modules missing"; exit 1; }
+D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)       # spod/node-local
+[[ -n ${UGP_DEPS:-} ]] || . "$D/../../scripts/env.sh"
+INST=$UGP_DEPS/install
+A2MOD=$INST/include/adios2/fortran
+[[ -f $A2MOD/adios2.mod ]] || { echo "STOP: adios2.mod not in $A2MOD (build ADIOS2 first)"; exit 1; }
+[[ -f $INST/include/fftw3-mpi.f03 ]] || { echo "STOP: FFTW with MPI not in $INST (build FFTW first)"; exit 1; }
+[[ -f $SLEPC_DIR/$PETSC_ARCH/include/slepcsvd.mod ]] || { echo "STOP: SLEPc not built in $SLEPC_DIR"; exit 1; }
 
 build_one() {  # build_one <name> <source>
   local t=$1 s=$2 b=$D/build/$1
   rm -rf "$b"; mkdir -p "$b"
   cp "$s" "$b/$t.F90"
-  /usr/bin/python3 "$D/tools/patch_env_overrides.py" "$b/$t.F90"
+  python3 "$D/tools/patch_env_overrides.py" "$b/$t.F90"
   {
-    echo "FFTW_DIR = $UGP/install"
-    echo "A2_DIR   = $UGP/install"
+    echo "DEPS     = $INST"
     echo "A2_MOD   = $A2MOD"
-    echo 'FFLAGS   = -O2 -g -fno-omit-frame-pointer -ffree-line-length-none -fallow-argument-mismatch -I$(FFTW_DIR)/include -I$(A2_MOD)'
-    echo 'LDFLAGS  = -L$(FFTW_DIR)/lib -Wl,-rpath,$(FFTW_DIR)/lib -lfftw3_mpi -lfftw3 -L$(A2_DIR)/lib -Wl,-rpath,$(A2_DIR)/lib -ladios2_fortran_mpi -ladios2_fortran -lm'
+    echo 'FFLAGS   = -O2 -g -fno-omit-frame-pointer -ffree-line-length-none -fallow-argument-mismatch -I$(DEPS)/include -I$(A2_MOD)'
+    echo 'LDFLAGS  = -L$(DEPS)/lib -Wl,-rpath,$(DEPS)/lib -lfftw3_mpi -lfftw3 -ladios2_fortran_mpi -ladios2_fortran -lm'
     echo "$t: $t.o"
     printf '\t$(FLINKER) $(FFLAGS) -o %s %s.o $(SLEPC_SYS_LIB) $(LDFLAGS)\n' "$t" "$t"
     echo ''
@@ -37,7 +39,7 @@ build_one() {  # build_one <name> <source>
     echo "STOP: $t build failed (full log: $b/build.log)"; exit 1
   fi
   [[ -x $b/$t ]] || { echo "STOP: no $b/$t"; exit 1; }
-  echo "built: $b/$t ($(grep -c -i warning "$b/build.log" || true) warnings)"
+  echo "built: $b/$t"
 }
 
 map_test() {
@@ -45,7 +47,7 @@ map_test() {
   rm -rf "$b"; mkdir -p "$b/mod"
   # module node_local_map = first program unit of spod_nl.F90 (up to 'end module node_local_map')
   awk '{print} /^[ \t]*end[ \t]+module[ \t]+node_local_map/{exit}' "$D/src/spod_nl.F90" > "$b/node_local_map.F90"
-  gfortran-11 -O2 -Wall -fcheck=all -J"$b/mod" -o "$b/test_node_local_map" \
+  "$FC" -O2 -Wall -fcheck=all -J"$b/mod" -o "$b/test_node_local_map" \
       "$b/node_local_map.F90" "$D/src/test_node_local_map.f90" > "$b/build.log" 2>&1 \
     || { cat "$b/build.log"; echo "STOP: mapping test build failed"; exit 1; }
   "$b/test_node_local_map" | tail -5

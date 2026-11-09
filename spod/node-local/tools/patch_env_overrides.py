@@ -17,7 +17,7 @@ the value written in UserInput. Running it twice changes nothing.
 import re
 import sys
 
-MARK = "spod-dev: settings from environment variables"
+MARK = "node-local: settings from environment variables"
 NUM = [("SPOD_NX", "gridNx"), ("SPOD_NY", "gridNy"), ("SPOD_NZ", "gridNz"),
        ("SPOD_NSNAP", "numberOfSnapShot"), ("SPOD_NDFT", "nDFT"), ("SPOD_K", "k"),
        ("SPOD_OVERLAP", "percentageOfOverall"), ("SPOD_NSAVE", "nFreqToSave")]

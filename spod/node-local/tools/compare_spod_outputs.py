@@ -1,6 +1,6 @@
 """
 Compare the outputs of two SPOD runs on the same data, e.g. the current
-reader (spod-adios2.txt) and the node-local reader.
+reader (old ADIOS2 reader) and the node-local reader.
 
     python tools/compare_spod_outputs.py RUN_DIR_A RUN_DIR_B
 

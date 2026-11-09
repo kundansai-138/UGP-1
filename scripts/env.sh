@@ -1,17 +1,19 @@
-export UGP=$HOME/ugp
-export PATH=$UGP/install/bin:$PATH
-export LD_LIBRARY_PATH=$UGP/install/lib:$UGP/install/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-export CMAKE_PREFIX_PATH=$UGP/install
-export CC=gcc-11 CXX=g++-11 FC=gfortran-11
-export MPICH_CC=gcc-11 MPICH_CXX=g++-11 MPICH_FC=gfortran-11
-export PETSC_DIR=$UGP/src/petsc
-export PETSC_ARCH=arch-complex-opt
-export LD_LIBRARY_PATH=$PETSC_DIR/$PETSC_ARCH/lib:$LD_LIBRARY_PATH
-export SLEPC_DIR=$UGP/src/slepc
-export LD_LIBRARY_PATH=$SLEPC_DIR/$PETSC_ARCH/lib:$LD_LIBRARY_PATH
-
-# --- Intel VTune (profiling only; does not affect normal runs) ---
-VTUNE_VARS=/opt/intel/oneapi/vtune/2025.7/env/vars.sh
-if [ -f "$VTUNE_VARS" ] && [ -z "$VTUNE_PROFILER_DIR" ]; then
-    source "$VTUNE_VARS" > /dev/null 2>&1
-fi
+# env.sh - environment for building and running everything in this repository.
+# Load it in every shell first:   . scripts/env.sh      (from the repository root)
+#
+#   UGP_ROOT  this repository (found from this file's location)
+#   UGP_DEPS  where the libraries are built and installed (default: deps/ inside the repository):
+#               $UGP_DEPS/install     ADIOS2 and FFTW (bin, lib, include)
+#               $UGP_DEPS/src/petsc   PETSc (PETSC_DIR), built with PETSC_ARCH below
+#               $UGP_DEPS/src/slepc   SLEPc (SLEPC_DIR)
+#             Set UGP_DEPS before loading this file to use libraries built somewhere else.
+#   CC / CXX / FC and MPICH_*: the compilers MPICH's wrappers use (gcc-11 family by default).
+export UGP_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+export UGP_DEPS=${UGP_DEPS:-$UGP_ROOT/deps}
+export CC=${CC:-gcc-11} CXX=${CXX:-g++-11} FC=${FC:-gfortran-11}
+export MPICH_CC=$CC MPICH_CXX=$CXX MPICH_FC=$FC
+export PETSC_DIR=$UGP_DEPS/src/petsc
+export PETSC_ARCH=${PETSC_ARCH:-arch-complex-opt}
+export SLEPC_DIR=$UGP_DEPS/src/slepc
+export PATH=$UGP_DEPS/install/bin:$PATH
+export LD_LIBRARY_PATH=$UGP_DEPS/install/lib:$UGP_DEPS/install/lib64:$PETSC_DIR/$PETSC_ARCH/lib:$SLEPC_DIR/$PETSC_ARCH/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}

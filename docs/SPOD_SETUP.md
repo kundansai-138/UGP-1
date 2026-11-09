@@ -1,169 +1,194 @@
 # Streaming SPOD setup
 
-Two SPOD readers are in this repository. Both run the same streaming SPOD maths (PETSc/SLEPc,
-complex scalars); they differ only in which part of each snapshot a rank reads.
+This guide builds the libraries SPOD needs and both SPOD readers. Do sections 1–3 of
+[XCOMPACT3D_SETUP.md](XCOMPACT3D_SETUP.md) first (requirements, `scripts/env.sh`, ADIOS2).
+All paths are relative to the cloned repository; load the environment first:
 
-| Folder | Reader | Server location |
+```bash
+. scripts/env.sh
+```
+
+Both readers run the same streaming SPOD (PETSc/SLEPc with complex numbers). They differ only in
+which part of each snapshot an MPI rank reads:
+
+| Folder | Reader | What each SPOD rank reads |
 |---|---|---|
-| `spod/adios2-old/` | **old ADIOS2 reader**: each rank reads whole x-y planes | `~/ugp/src/SPOD-adios2` |
-| `spod/node-local/` | **node-local reader**: each rank reads only data written on its own node | `~/spod-dev` |
-
-Do [XCOMPACT3D_SETUP.md](XCOMPACT3D_SETUP.md) sections 1–3 first (toolchain, `env.sh`, ADIOS2).
+| `spod/adios2-old/` | old ADIOS2 reader | whole x-y planes, from every Xcompact3d rank |
+| `spod/node-local/` | node-local reader | only data written by Xcompact3d ranks on its own machine |
 
 ## 1. Libraries
 
 ### FFTW 3.3.10 with MPI
 
-The tarball is in `spod/adios2-old/Required libraries/fftw-3.3.10.tar.gz`.
+The source is included in `spod/adios2-old/Required libraries/`.
 
 ```bash
-mkdir -p ~/ugp/src/fftw ~/ugp/build/fftw
-tar -xzf fftw-3.3.10.tar.gz -C ~/ugp/src/fftw
-cd ~/ugp/build/fftw
-~/ugp/src/fftw/fftw-3.3.10/configure --prefix=$HOME/ugp/install --enable-mpi --enable-shared MPICC=mpicc
+mkdir -p $UGP_DEPS/src $UGP_DEPS/build/fftw
+tar -xzf "spod/adios2-old/Required libraries/fftw-3.3.10.tar.gz" -C $UGP_DEPS/src
+cd $UGP_DEPS/build/fftw
+$UGP_DEPS/src/fftw-3.3.10/configure --prefix=$UGP_DEPS/install --enable-mpi --enable-shared MPICC=mpicc
 make -j8 && make install
-ls ~/ugp/install/include/fftw3-mpi.f03     # must exist
+cd $UGP_ROOT
+ls $UGP_DEPS/install/include/fftw3-mpi.f03         # must exist
 ```
 
-### PETSc 3.22.2, complex scalars (`scripts/step2.sh`)
+### PETSc 3.22.2 with complex numbers
 
 ```bash
-. ~/ugp/env.sh
-cd ~/ugp/src && git clone --branch v3.22.2 --depth 1 https://gitlab.com/petsc/petsc.git petsc
+cd $UGP_DEPS/src
+git clone --branch v3.22.2 --depth 1 https://gitlab.com/petsc/petsc.git petsc
 cd petsc
 FL="-O3 -g -fno-omit-frame-pointer"
-env -u CC -u CXX -u FC /usr/bin/python3 ./configure PETSC_ARCH=arch-complex-opt \
+env -u CC -u CXX -u FC python3 ./configure PETSC_ARCH=$PETSC_ARCH \
   --with-cc=mpicc --with-cxx=mpicxx --with-fc=mpif90 \
   --with-scalar-type=complex --with-precision=double --with-debugging=0 \
   COPTFLAGS="$FL" CXXOPTFLAGS="$FL" FOPTFLAGS="$FL" \
   --download-fblaslapack --with-shared-libraries=1 --with-x=0
-make MAKE_NP=8 all && make check
+make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all
+make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
+cd $UGP_ROOT
 ```
 
-Use `/usr/bin/python3`; anaconda's Python segfaults in PETSc's configure.
+`--download-fblaslapack` needs internet access during `configure`. Use a system Python 3;
+an Anaconda Python crashed in PETSc's `configure` on the lab machines.
 
-### SLEPc 3.22.2 (`scripts/step3.sh`)
+### SLEPc 3.22.2
 
 ```bash
-cd ~/ugp/src && git clone --branch v3.22.2 --depth 1 https://gitlab.com/slepc/slepc.git slepc
-cd slepc && export SLEPC_DIR=$PWD
-/usr/bin/python3 ./configure
+cd $UGP_DEPS/src
+git clone --branch v3.22.2 --depth 1 https://gitlab.com/slepc/slepc.git slepc
+cd slepc
+python3 ./configure
 make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH
 make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
+cd $UGP_ROOT
 ```
-
-`env.sh` already exports `PETSC_DIR`, `PETSC_ARCH` and `SLEPC_DIR`.
-
-### Optional: the original file-based SPOD
-
-`scripts/step4.sh` builds the upstream SPOD (reads `.bin` snapshot files) into `~/ugp/build/spod`.
-`scripts/step5.sh` adds environment-variable settings to it (`ugp-tools/patch_userinput.py`)
-and runs a smoke test on synthetic data with a known answer: the leading modes must come out
-at frequency bins 4, 10 and 14 (`SMOKE TEST: PASS`).
 
 ## 2. Old ADIOS2 reader (`spod/adios2-old`)
 
-`Streaming SPOD/streamingSPODModule.F90` reads the SST stream of Xcompact3d instead of files.
+The source is `spod/adios2-old/Streaming SPOD/streamingSPODModule.F90`.
 
-- The snapshot vector is `q = [ux; uy; uz; pp]`, 4 × 301³ = 109,083,604 rows.
-- PETSc splits the rows into equal contiguous ranges. Each rank reads the whole x-y planes
-  that cover its range, so every rank needs data from every Xcompact3d rank.
-- It opens IO `spod-input`. If `spod_sst.xml` is not in the folder it runs in (the normal case),
-  it uses a built-in SST engine.
+How it reads: the snapshot vector is `q = [ux; uy; uz; pp]` (4 × 301³ = 109,083,604 rows).
+PETSc gives every rank an equal, contiguous range of rows; each rank reads the whole x-y planes
+that cover its range. It opens the ADIOS2 IO `spod-input`; when `spod_sst.xml` is not in the
+folder it runs in (the normal case), it uses a built-in SST engine.
 
-**Its settings are written in `Subroutine UserInput`** (edit and rebuild to change them):
+Its settings are written in `Subroutine UserInput`. To change them, edit that subroutine and
+build again:
 
 | Setting | Value |
 |---|---|
 | Grid | `gridNx = gridNy = gridNz = 301` |
 | Variables | `ux, uy, uz, pp` |
-| Stream | `streamName = 'data'` (run SPOD in the Xcompact3d run folder) |
+| Stream | `streamName = 'data'`: SPOD runs in the Xcompact3d run folder |
 | Snapshots | `numberOfSnapShot = 31` |
-| SPOD | `nDFT = 8`, `percentageOfOverall = 0.5` (overlap 4), `k = 3` |
-| Output | `nFreqToSave = 5` (5 mode files), equal weights |
+| SPOD | `nDFT = 8`, `percentageOfOverall = 0.5` (overlap 4 snapshots), `k = 3` |
+| Output | `nFreqToSave = 5` mode files, equal weights |
 
-`streamingSPODModule.F90.65grid` is the same reader set up for 65³ tests.
+`streamingSPODModule.F90.65grid` is the same reader set up for small tests: 65³ grid,
+10 snapshots, `nDFT = 4`, 3 mode files.
 
-**Build** (`scripts/step6.sh` creates the working copy, `scripts/ugp-tools/build_spod_adios2.sh`
-builds it):
+Build:
 
 ```bash
-bash ~/ugp/tools/build_spod_adios2.sh      # -> ~/ugp/build/spod-adios2/streamingSPOD
+bash spod/adios2-old/build.sh              # -> spod/adios2-old/build/streamingSPOD
 ```
 
-`spod/adios2-old/Makefile.ugp` is the Makefile it generates: `-O2 -g -ffree-line-length-none
--fallow-argument-mismatch`, FFTW and the ADIOS2 Fortran module on the include path, and
-`-lfftw3_mpi -lfftw3 -ladios2_fortran_mpi -ladios2_fortran` plus SLEPc's `slepc_common`.
+`spod/adios2-old/Makefile.ugp` is the Makefile used on the lab machines, kept for reference;
+`build.sh` writes the equivalent one for this repository.
+
+For the 65³ variant (it replaces the build above):
+
+```bash
+SRC="spod/adios2-old/Streaming SPOD/streamingSPODModule.F90.65grid" bash spod/adios2-old/build.sh
+```
 
 ## 3. Node-local reader (`spod/node-local`)
 
 ### What it changes
 
-The SPOD maths is unchanged. Only the layout of the rows changes:
+The SPOD maths is the same as in the old reader. Only the way rows are assigned to ranks changes:
 
-1. On each node, the reader lists the pencils of the Xcompact3d ranks running on that node,
-   line by line (one line = one run along x), and splits that list evenly over the SPOD ranks
-   of the node. Every piece lies inside one Xcompact3d rank's pencil on the same node, so
-   ADIOS2 serves it locally.
-2. Every PETSc object with one row per grid point is created with this local row count instead of
-   `PETSC_DECIDE`.
-3. A `VecScatter` converts between this order and the natural order: once for the weights at
-   start-up, and once per saved mode before writing. Mode files therefore have exactly the old
-   layout.
-4. At start-up it checks that the reordering covers every grid point exactly once (the run stops
-   otherwise) and prints one line per node: host, SPOD ranks, and the Xcompact3d ranks it reads.
+1. On each machine, the reader lists the pencils of the Xcompact3d ranks running on that machine,
+   line by line (a line is one run of points along x), and divides that list evenly among the
+   SPOD ranks of the machine. Every piece lies inside one Xcompact3d rank's pencil on the same
+   machine, so ADIOS2 delivers it without using the network.
+2. Every PETSc object with one row per grid point is created with this number of local rows.
+3. The weights are put into this order once at start-up, and every saved mode is put back into
+   the normal order before it is written. Mode files therefore look exactly like the old
+   reader's.
+4. At start-up it checks that every grid point is read exactly once (the run stops otherwise) and
+   prints one line per machine: machine name, SPOD ranks, and the Xcompact3d ranks it reads.
 
 It assumes X-pencils, the same `p_row × p_col` as Xcompact3d, and both programs filling the same
-nodes in the same order. If the last two are wrong, the results stay correct; only the reads stop
-being local.
+machines in the same order. If the last two do not hold, the results are still correct; only the
+reads are no longer local.
+
+More detail: [spod/node-local/design/NODE_LOCAL_DESIGN.md](../spod/node-local/design/NODE_LOCAL_DESIGN.md).
 
 ### Files
 
 | File | Purpose |
 |---|---|
-| `src/spod_nl.F90` | node-local reader (module `node_local_map` + SPOD + program) |
-| `src/spod_old.F90` | copy of the old reader, so both are built the same way |
+| `src/spod_nl.F90` | node-local reader: module `node_local_map`, the SPOD module and the program in one file |
+| `src/spod_old.F90` | copy of the old reader, built the same way, for side-by-side tests |
 | `src/test_node_local_map.f90` | stand-alone test of the mapping |
-| `env.sh`, `setup.sh`, `build.sh` | environment, one-time set-up, build |
+| `build.sh` | runs the mapping test and builds both readers |
+| `run_compare.sh` | correctness test on one machine (see RUNNING.md) |
 | `tools/patch_env_overrides.py` | lets both readers take their settings from environment variables |
-| `tools/run_S4_nl.sh`, `tools/queue_S4.sh`, `run_compare.sh` | runs (see RUNNING.md) |
-| `tools/compare_spod_outputs.py`, `tools/net_rates.py`, `tools/wait_analysis.py` | analysis |
+| `tools/run_S4_nl.sh` | runs one case with the node-local reader (see RUNNING.md) |
+| `tools/queue_S4.sh` | runs the five cases one after another (see RUNNING.md) |
+| `tools/compare_spod_outputs.py` | compares the energies and modes of two runs |
+| `tools/net_rates.py` | network MB/s per machine from a finished run |
+| `tools/wait_analysis.py`, `tools/adios2_wait_shim.c` | wait analysis and its timing library (copies of the ones in `scripts/`) |
+| `tools/rank_map.sh` | shows which MPI ranks run on which machine during a run |
 | `design/` | design notes and the Python model used to check the mapping |
+| `env.sh`, `setup.sh`, `origin.txt`, `hosts/coloc8`, `tools/status.sh`, `tools/watch_job.sh`, `tools/port_listen.sh`, `tools/serve_file.sh`, `tools/probe_nodes.sh`, `tools/run_S4.orig.sh` | from the original setup on the lab machines, kept for reference; the steps in these guides do not use them |
 
 ### Build
 
 ```bash
-cp -r spod/node-local ~/spod-dev        # the scripts expect ~/spod-dev
-bash ~/spod-dev/setup.sh                # copies the old reader, the Xcompact3d binary and the case from ~/ugp
-bash ~/spod-dev/build.sh                # mapping test + both readers
+bash spod/node-local/build.sh
 ```
 
-`build.sh` first runs the mapping test (expect `node_local_map: 720 configurations PASS, 0 FAIL`),
-then builds `build/spod_old/spod_old` and `build/spod_nl/spod_nl` with the same flags and
-libraries as the old reader. Rebuild after any source change with `bash ~/spod-dev/build.sh nl`.
+It first runs the mapping test, which must print
+`node_local_map: 720 configurations PASS, 0 FAIL`. Then it builds
+`spod/node-local/build/spod_old/spod_old` and `spod/node-local/build/spod_nl/spod_nl` with the
+same compiler flags and libraries as the old reader. After changing a source file, rebuild one
+reader with `bash spod/node-local/build.sh nl` (or `old`, or `map`).
 
 ### Settings (environment variables)
 
-Unset or empty variables keep the value in `UserInput`.
+Both readers built by this script read these variables at start-up. A variable that is not set,
+or is empty, keeps the value written in `UserInput`.
 
 | Variable | Setting |
 |---|---|
 | `SPOD_NX`, `SPOD_NY`, `SPOD_NZ` | grid |
-| `SPOD_STREAM` | stream name or path (contact file `<name>.sst`) |
-| `SPOD_CONFIG` | ADIOS2 XML for IO `spod-input` (leave unset for the built-in SST engine) |
-| `SPOD_NSNAP`, `SPOD_NDFT`, `SPOD_K` | snapshots, DFT length, modes kept |
-| `SPOD_OVERLAP` | overlap as a **fraction** (0.5), not a snapshot count |
+| `SPOD_STREAM` | stream name or path (the contact file is `<name>.sst`) |
+| `SPOD_CONFIG` | ADIOS2 XML file for IO `spod-input`; leave unset for the built-in SST engine |
+| `SPOD_NSNAP` | number of snapshots |
+| `SPOD_NDFT` | snapshots per DFT block |
+| `SPOD_K` | modes kept |
+| `SPOD_OVERLAP` | overlap as a **fraction** of `SPOD_NDFT` (0.5), not a number of snapshots |
 | `SPOD_NSAVE` | number of mode files written |
-| `SPOD_WEIGHTS` | weight file, `none` = equal weights |
+| `SPOD_WEIGHTS` | weight file; `none` = equal weights |
 | `X3D_PROW`, `X3D_PCOL` | Xcompact3d's processor grid (node-local reader only) |
-| `X3D_RANKS_PER_NODE` | 0 = ranks fill the same nodes in order (default) |
+| `X3D_RANKS_PER_NODE` | 0 (default): Xcompact3d fills the same machines in the same order as SPOD |
+
+The run scripts set all of these themselves.
 
 ## 4. Output files
+
+Each SPOD run writes into the folder it runs in:
 
 | File | Contents |
 |---|---|
 | `EnegySpectra.txt` | singular values per mode and frequency (PETSc ASCII matrix) |
-| `SPODMODE_freq_<i>_sigma_<σ>.dat` | one mode: PETSc binary complex vector, natural order `[ux; uy; uz; pp]`, x fastest; 1.75 GB at 301³ |
+| `SPODMODE_freq_<i>_sigma_<σ>.dat` | one mode: PETSc binary complex vector in the order `[ux; uy; uz; pp]`, x varying fastest; 1.75 GB each at 301³ |
 
-Compare two runs with `python3 tools/compare_spod_outputs.py RUN_A RUN_B`. It allows for the
-phase freedom of SPOD modes (a mode is only defined up to a factor e^iθ).
+To compare two runs (allowing for the arbitrary phase of each mode):
+
+```bash
+python3 spod/node-local/tools/compare_spod_outputs.py RUN_A RUN_B
+```

@@ -1,37 +1,35 @@
 #!/usr/bin/env bash
 # =====================================================================
-# run_S4_nl.sh - copy of ~/ugp/tools/case_s4.sh (md5 da2163b9...) for the NODE-LOCAL SPOD reader.
-# Same steps, measurements and clean-up as case_s4.sh. Changes, nothing else:
-#   * SBIN = ~/spod-dev/build/spod_nl/spod_nl, RUNROOT = ~/spod-dev/runs/S4_nl, SPOD_NSAVE = 5
+# run_S4_nl.sh - scripts/case_s4.sh for the NODE-LOCAL SPOD reader. Same steps, measurements and
+# clean-up as case_s4.sh. Paths are relative to this repository; load scripts/env.sh first.
+# Differences from case_s4.sh, nothing else:
+#   * SBIN = spod/node-local/build/spod_nl/spod_nl, RUNROOT = runs/S4_nl, SPOD_NSAVE = 5
 #     (the old reader has nFreqToSave = 5 built in, so both write the same amount at the end)
-#   * Xcompact3d keeps p_row = p_col = 0 (auto, as S4); the reader gets the grid 2decomp's best_2d_grid
-#     picks (p_col = middle factor of nproc), and run_one stops if the Xcompact3d log disagrees
-#   * reader settings for the spod-dev patch: SPOD_OVERLAP as a fraction, no SPOD_CONFIG (hard-coded
+#   * Xcompact3d keeps p_row = p_col = 0 (automatic); the reader gets the grid 2decomp's best_2d_grid
+#     picks (p_col = middle factor of the rank count), and the run stops if the Xcompact3d log disagrees
+#   * reader settings as environment variables: SPOD_OVERLAP as a fraction, no SPOD_CONFIG (built-in
 #     SST engine, as the old reader), X3D_PROW / X3D_PCOL, equal weights
-#   * RUN_TIMEOUT safety limit per mpirun
-# ---------------------------------------------------------------------
-# run_S4.sh - S4: Xcompact3d (ADIOS2 build) streams snapshots over SST straight into streaming SPOD.
-# Same layout as basecase.sh (S0), so the two summaries compare line by line.
+#   * GRID=N sets nx = ny = nz = N for quick tests; RUN_TIMEOUT limits each mpirun
 #
-#   writer : x3d_lab_adios/xcompact3d   hostfile       (csews160..167, 8 x 24 = 192 ranks, under APS)
-#   profiling: Intel APS on both sides (APS=1, APS_SPOD=1) -> aps_report.txt, aps_spod_report.txt
-#   reader : streamingSPOD (spod-adios2) hostfile_spod  (csews168..171, 4 x RPPN ranks: 12 -> 48, 8 -> 32, 4 -> 16)
+#   writer : xcompact3d/xcompact3d   on the machines in WHOSTS (WPPN ranks each, under APS)
+#   reader : spod_nl                 on the machines in RHOSTS (RPPN ranks each, under APS)
 #   input  : ilast = 150, ioutput = 5   -> 31 snapshots (step 0, 5, ..., 150), ilist = 1, no restart writes
-#   SPOD   : 31 snapshots, nDFT 8, overlap 4 -> 6 blocks (real values are hard-coded in streamingSPODModule.F90)
+#   SPOD   : 31 snapshots, nDFT 8, overlap 4 -> 6 blocks
 #
 # Steps
 #   1. settings and checks
-#   2. fresh run folder from testcase_adios (inputs + adios2_config.sst.xml; SPOD uses adios2_config.xml too)
-#   3. machine information of all 12 machines (meta.txt)
+#   2. fresh run folder from case/testcase_adios (inputs + adios2_config.sst.xml)
+#   3. machine information of all machines (meta.txt)
 #   4. REPEATS runs: writer starts -> data.sst appears -> SPOD starts -> both finish
 #      every run: x3d_ts.log, spod_ts.log, node_<host>.csv, APS raw + reports (SPOD outputs deleted, KEEP_SPOD=1 keeps)
 #   5. summary over all runs (summary.csv / summary.txt)
 #   6. reader/writer wait per snapshot (libadios2_wait.so times every begin_step/end_step per rank)
 #      -> run<N>/wait/*.csv, wait_steps.csv, wait_summary.csv, wait_summary.txt
 #
-# Usage:   bash run_S4.sh
-# Options: ILAST=150 IOUTPUT=5 REPEATS=1  WPPN=24 RPPN=12  APS=1 (writer under APS)
-#          reader sweep: RPPN=8 bash run_S4.sh ; RPPN=4 bash run_S4.sh   (-ppn overrides the :12 in hostfile_spod)
+# Usage:   bash spod/node-local/tools/run_S4_nl.sh
+# Options: ILAST=150 IOUTPUT=5 REPEATS=1  WPPN=24 RPPN=12  APS=1 (writer under APS)  GRID=65 (quick test)
+#          IFACE=eno1  network interface MPI and the SST config use (must be the same on all machines)
+#          MPIRUN=mpirun (MPICH Hydra)  APS_ENV=<Intel oneAPI vtune/env/vars.sh>  RUNROOT=runs/S4_nl
 #          SPOD_NDFT=16 SPOD_OVERLAP=8 SPOD_K=3 SPOD_NSAVE=2 SPOD_VARS="ux uy uz pp"
 #          S0_STEP=<S0 median step s>  (prints the S4 overhead per step)
 #          short test: ILAST=10 SPOD_NDFT=2 SPOD_OVERLAP=1 REPEATS=1
@@ -45,18 +43,20 @@
 #          KEEP_SPOD=1 keeps the spectrum (+ KEEP_MODES=N leading modes of run1); KEEP_X3D_OUT=1 keeps the
 #          Xcompact3d outputs; KEEP_APS_RAW=0 removes the raw APS folders once the reports are written
 #          WPIN=0-19 RPIN=20-23  CPU lists for every writer / reader rank (taskset -c), e.g. SPOD on the writer
-#          machines: WPPN=20 RPPN=4 RHOSTS=~/ugp/tools/hostfile WPIN=0-19 RPIN=20-23 (check lscpu -e first)
-# Compare layouts afterwards: python3 wait_analysis.py ~/ugp/runs/S4/S4_r4x12_* ~/ugp/runs/S4/S4_r4x8_* ...
+#          machines: WPPN=20 RPPN=4 RHOSTS=scripts/hostfile WPIN=0-19 RPIN=20-23 (check lscpu -e first)
+# Compare layouts afterwards: python3 scripts/wait_analysis.py runs/S4/S4_* runs/S4_nl/S4_* ...
 # =====================================================================
 set -euo pipefail
 
 # ---------------------------------------------------------------- 1. settings
-CASE=${CASE:-$HOME/ugp/runs/testcase_adios}           # from setup_adios_case.sh
-BIN=${BIN:-$HOME/ugp/src/x3d_lab_adios/xcompact3d}    # writer (IO=adios2 build with SST support)
-SBIN=${SBIN:-$HOME/spod-dev/build/spod_nl/spod_nl}    # reader: node-local streaming SPOD
+ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)   # this repository
+CASE=${CASE:-$ROOT/case/testcase_adios}               # inputs of the jet case
+BIN=${BIN:-$ROOT/xcompact3d/xcompact3d}               # writer (IO=adios2 build with SST support)
+SBIN=${SBIN:-$ROOT/spod/node-local/build/spod_nl/spod_nl}   # reader: node-local streaming SPOD
 RUN_TIMEOUT=${RUN_TIMEOUT:-14400}                     # s, safety limit for each mpirun
-WHOSTS=${WHOSTS:-$HOME/ugp/tools/hostfile}            # csews160..167
-RHOSTS=${RHOSTS:-$HOME/ugp/tools/hostfile_spod}       # csews168..171
+GRID=${GRID:-}                                        # e.g. GRID=65: nx = ny = nz = 65 for a quick test
+WHOSTS=${WHOSTS:-$ROOT/scripts/hostfile}              # writer machines
+RHOSTS=${RHOSTS:-$ROOT/scripts/hostfile_spod}         # SPOD machines
 WPPN=${WPPN:-24}; RPPN=${RPPN:-12}
 WPIN=${WPIN:-}; RPIN=${RPIN:-}                         # CPU lists (taskset -c); empty = no pinning
 REPEATS=${REPEATS:-1}                                  # runs per case (REPEATS=2 for a repeat)
@@ -69,12 +69,13 @@ SPOD_NDFT=${SPOD_NDFT:-8}; SPOD_OVERLAP=${SPOD_OVERLAP:-4}
 SPOD_K=${SPOD_K:-3};        SPOD_NSAVE=${SPOD_NSAVE:-5}   # 5 = what the old reader saves
 SPOD_VARS=${SPOD_VARS:-ux uy uz pp}
 S0_STEP=${S0_STEP:-}
-MPIRUN=${MPIRUN:-/usr/local/bin/mpirun}
-APS_ENV=${APS_ENV:-/opt/intel/oneapi/vtune/2025.7/env/vars.sh}
-RUNROOT=${RUNROOT:-$HOME/spod-dev/runs/S4_nl}
+MPIRUN=${MPIRUN:-$(command -v mpirun)}                # MPICH Hydra mpirun
+APS_ENV=${APS_ENV:-/opt/intel/oneapi/vtune/2025.7/env/vars.sh}   # Intel APS (oneAPI VTune); APS=0 without it
+RUNROOT=${RUNROOT:-$ROOT/runs/S4_nl}
 SPOD_XML=${SPOD_XML:-adios2_config.xml}               # SPOD reads the same config as the solver (solution-io = SST)
 SST_WAIT=${SST_WAIT:-600}                             # s to wait for data.sst after writer start
-NET=(-iface eno1 -genv FI_PROVIDER tcp -genv FI_TCP_IFACE eno1 -genv UCX_LOG_LEVEL error)
+IFACE=${IFACE:-eno1}                                  # network interface (same name on all machines)
+NET=(-iface "$IFACE" -genv FI_PROVIDER tcp -genv FI_TCP_IFACE "$IFACE" -genv UCX_LOG_LEVEL error)
 SELF_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 WAIT=${WAIT:-1}                                       # time SPOD's begin_step/end_step (reader wait)
 WAIT_WRITER=${WAIT_WRITER:-$WAIT}                     # same on the Xcompact3d side (writer blocked by SPOD)
@@ -86,8 +87,9 @@ KEEP_X3D_OUT=${KEEP_X3D_OUT:-0}                       # 1 = keep Xcompact3d outp
 KEEP_APS_RAW=${KEEP_APS_RAW:-1}                       # 0 = remove raw APS folders once the reports exist
 
 die() { echo "ERROR: $*" >&2; exit 1; }
-[[ -f $CASE/input.i3d ]]             || die "no input.i3d in $CASE (run setup_adios_case.sh)"
-[[ -f $CASE/adios2_config.sst.xml ]] || die "no adios2_config.sst.xml in $CASE (run setup_adios_case.sh)"
+[[ -f $CASE/input.i3d ]]             || die "no input.i3d in $CASE"
+[[ -f $CASE/adios2_config.sst.xml ]] || die "no adios2_config.sst.xml in $CASE"
+[[ -n $MPIRUN && -x $MPIRUN ]]       || die "mpirun not found (load scripts/env.sh or set MPIRUN)"
 [[ -x $BIN ]]   || die "writer binary not found: $BIN"
 [[ -x $SBIN ]]  || die "SPOD binary not found: $SBIN"
 [[ -f $WHOSTS ]] || die "hostfile not found: $WHOSTS"
@@ -144,19 +146,21 @@ cd "$RUN"
 for d in $OUTPUT_DIRS; do mkdir -p "$d"; done
 cp input.i3d input.i3d.orig
 cp adios2_config.sst.xml adios2_config.xml           # solution-io -> SST stream "data"
+sed -i -E "s/(key=\"NetworkInterface\" value=\")[^\"]*/\1$IFACE/" adios2_config.xml   # SST uses IFACE too
 
 setv ilast "$ILAST" input.i3d
 setv ioutput "$IOUTPUT" input.i3d
 grep -qiE '(^|[ ,])ivisu\s*=' input.i3d && setv ivisu 1 input.i3d   # snapshots ON (incl. snapshot 0)
 setv icheckpoint $((ILAST + 1)) input.i3d                           # no restart writes (as S0)
 setv ilist 1 input.i3d                                              # one step line per step (as S0)
+if [[ -n $GRID ]]; then for v in nx ny nz; do setv $v "$GRID" input.i3d; done; fi   # quick test grid
 NX=$(getv nx input.i3d); NY=$(getv ny input.i3d); NZ=$(getv nz input.i3d)
 NSNAP=$(( ILAST / IOUTPUT + 1 ))                                    # + snapshot 0 at start-up
 NBLK=$(( SPOD_NDFT > NSNAP ? 0 : (NSNAP - SPOD_NDFT) / (SPOD_NDFT - SPOD_OVERLAP) + 1 ))
 (( NBLK >= 1 )) || die "nDFT $SPOD_NDFT > $NSNAP snapshots: no SPOD block would finish"
 
 # Xcompact3d decomposition: input keeps p_row = p_col = 0 (auto, as S4). 2decomp's best_2d_grid
-# (decomp2d/decomp_2d.f90 of x3d_lab_adios) lists the factors of nproc in ascending order and takes
+# (xcompact3d/decomp2d/decomp_2d.f90) lists the factors of nproc in ascending order and takes
 # p_col = factors(nfact/2 + 1), p_row = nproc / p_col (192 -> 12 x 16, 160 -> 10 x 16).
 PR_IN=$(getv p_row input.i3d); PC_IN=$(getv p_col input.i3d)
 if [[ $PR_IN == 0 && $PC_IN == 0 ]]; then

@@ -26,7 +26,7 @@ Bursts (snapshots on which an SPOD block completes):
     writer after   = largest writer end_step on the snapshots published during the burst (shows real blocking)
 
 Usage
-    python3 wait_analysis.py ~/ugp/runs/S4/S4_r4x12_* ~/ugp/runs/S4/S4_r4x8_* ~/ugp/runs/S4/S4_r4x4_*
+    python3 scripts/wait_analysis.py runs/S4_coloc/S4_* runs/S4_coloc_nl/S4_*
     python3 wait_analysis.py <S4 folder> --engine data --csv compare.csv
 Each S4 folder gets wait_steps.csv, bursts.csv, wait_summary.csv and wait_summary.txt; the comparison
 table is printed.

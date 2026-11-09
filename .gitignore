@@ -5,8 +5,13 @@
 *.a
 *.so
 xcompact3d/xcompact3d
+xcompact3d/build.log
 build/
 bin/
+
+# libraries you build (scripts/env.sh: UGP_DEPS) and run outputs
+/deps/
+/runs/
 
 # large data: SPOD mode files, SST contact files, restart files
 SPODMODE_*

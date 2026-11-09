@@ -12,32 +12,37 @@
 # Everything runs on this machine only (mpirun -launcher fork). No BP4/BP5 data
 # files: snapshots only travel over SST. Disk use = logs + SPOD outputs.
 #
-# Defaults = the S4 case (testcase_adios inputs, ilast 150, ioutput 5 -> 31 snapshots,
+# Defaults = the jet case (case/testcase_adios, ilast 150, ioutput 5 -> 31 snapshots,
 # SPOD nDFT 8, overlap 4 of 8, k 3, 2 saved frequencies, ux uy uz pp) on a smaller
 # grid, so writer and all readers fit on one machine.
-# Home is shared with the S4 job (50 GB hard limit): a run whose estimated output
-# (SPOD modes) is over 1 GB, or whose estimated memory is over 8 GB, stops before
-# starting unless ALLOW_BIG=1. 65^3 writes ~100 MB and needs ~3.5 GB.
-# Usage:   bash run_compare.sh                 (65^3)
+# Size guard: a run whose estimated output (SPOD modes) is over 1 GB, or whose estimated
+# memory is over 8 GB, stops before starting unless ALLOW_BIG=1. 65^3 writes ~100 MB
+# and needs ~3.5 GB. Results go to runs/compare/ in this repository.
+# Needs: xcompact3d/xcompact3d built, spod/node-local/build.sh run, scripts/env.sh loaded.
+# Usage:   bash spod/node-local/run_compare.sh                 (65^3)
 # Options: N=65 PROW=2 PCOL=4 ILAST=150 IOUTPUT=5   Xcompact3d: N^3 grid, PROW x PCOL ranks
 #          NDFT=8 OVERLAP=0.5 K=3 NSAVE=2            SPOD
 #          NP_OLD=4 NP_NL="4 5"                       SPOD ranks per reader
 #          TLIMIT=7200                                s, everything is stopped after this
-#          ALLOW_BIG=1                                skip the size guard (only when no job runs)
+#          IFACE=eno1                                 network interface for MPI and SST
+#          ALLOW_BIG=1                                skip the size guard
 # =====================================================================
 set -euo pipefail
-D=$HOME/spod-dev
-. "$D/env.sh"
+D=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)       # spod/node-local
+ROOT=$(cd "$D/../.." && pwd)                           # this repository
+[[ -n ${UGP_DEPS:-} ]] || . "$ROOT/scripts/env.sh"
 N=${N:-65}; PROW=${PROW:-2}; PCOL=${PCOL:-4}; ILAST=${ILAST:-150}; IOUTPUT=${IOUTPUT:-5}
 NDFT=${NDFT:-8}; OVERLAP=${OVERLAP:-0.5}; K=${K:-3}; NSAVE=${NSAVE:-2}
 NP_OLD=${NP_OLD:-4}; NP_NL=${NP_NL:-4 5}
 TLIMIT=${TLIMIT:-7200}
-MPIRUN=/usr/local/bin/mpirun
-X3D=$D/bin/x3d_lab; OLD=$D/build/spod_old/spod_old; NL=$D/build/spod_nl/spod_nl
-NET=(-launcher fork -iface eno1 -genv FI_PROVIDER tcp -genv FI_TCP_IFACE eno1 -genv UCX_LOG_LEVEL error)
+MPIRUN=${MPIRUN:-$(command -v mpirun)}
+IFACE=${IFACE:-eno1}
+X3D=$ROOT/xcompact3d/xcompact3d; OLD=$D/build/spod_old/spod_old; NL=$D/build/spod_nl/spod_nl
+NET=(-launcher fork -iface "$IFACE" -genv FI_PROVIDER tcp -genv FI_TCP_IFACE "$IFACE" -genv UCX_LOG_LEVEL error)
 
 die() { echo "ERROR: $*" >&2; exit 1; }
-for b in "$X3D" "$OLD" "$NL"; do [[ -x $b ]] || die "missing $b (run setup.sh and build.sh)"; done
+[[ -n $MPIRUN && -x $MPIRUN ]] || die "mpirun not found (load scripts/env.sh or set MPIRUN)"
+for b in "$X3D" "$OLD" "$NL"; do [[ -x $b ]] || die "missing $b (build xcompact3d, then run spod/node-local/build.sh)"; done
 
 getv() { grep -ioE "(^|[ ,])$1\s*=\s*[-0-9]+" "$2" | head -1 | sed -E 's/.*=\s*//'; }
 setv() {
@@ -65,9 +70,11 @@ if [[ ${ALLOW_BIG:-0} != 1 ]] && (( OUT_MB > 1024 || MEM_MB > 8192 )); then
 fi
 
 # ---------------------------------------------------------------- run folder
-RUN=$D/runs/cmp_${N}_$(date +%Y%m%d_%H%M%S)
+RUN=$ROOT/runs/compare/cmp_${N}_$(date +%Y%m%d_%H%M%S)
 mkdir -p "$RUN"
-cp -r "$D/cases/base/." "$RUN/"
+cp -r "$ROOT/case/testcase_adios/." "$RUN/"
+cp "$RUN/adios2_config.sst.xml" "$RUN/adios2_config.xml"
+sed -i -E "s/(key=\"NetworkInterface\" value=\")[^\"]*/\1$IFACE/" "$RUN/adios2_config.xml"
 cd "$RUN"
 for d in data probes statistics streaklines out; do mkdir -p "$d"; done
 cp input.i3d input.i3d.orig
@@ -106,7 +113,7 @@ sample_mem() {
   while [[ ! -e $RUN/.stop ]]; do
     {
       printf '%s used=%s' "$(date +%s)" "$(free -m | awk '/^Mem:/{print $3}')"
-      for p in $(pgrep -u "$USER" -x 'x3d_lab|spod_old|spod_nl'); do
+      for p in $(pgrep -u "$USER" -x 'xcompact3d|spod_old|spod_nl'); do
         echo "$(basename "$(readlink /proc/$p/cwd 2>/dev/null)") $(awk '/VmRSS/{print $2}' /proc/$p/status 2>/dev/null)"
       done | awk -v rb="$run_base" '{k = ($1 == rb) ? "x3d" : $1; s[k] += $2} END {for (k in s) printf " %s=%d", k, s[k] / 1024}'
       echo
@@ -162,7 +169,7 @@ status=0
 for r in "${READERS[@]:1}"; do
   name=${r%%:*}
   echo "--- old vs $name"
-  /usr/bin/python3 "$D/tools/compare_spod_outputs.py" "$RUN/old" "$RUN/$name" | tee "compare_old_vs_$name.txt" || status=1
+  python3 "$D/tools/compare_spod_outputs.py" "$RUN/old" "$RUN/$name" | tee "compare_old_vs_$name.txt" || status=1
 done
 leftover=$(find "$RUN" -name '*.bp4' -o -name '*.bp5' | head -3)
 [[ -z $leftover ]] || echo "NOTE: ADIOS2 files found: $leftover"
