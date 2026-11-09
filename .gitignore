@@ -1,0 +1,14 @@
+# binaries and build files
+*.o
+*.mod
+*.smod
+*.a
+*.so
+xcompact3d/xcompact3d
+build/
+bin/
+
+# large data: SPOD mode files, SST contact files, restart files
+SPODMODE_*
+*.sst
+checkpoint

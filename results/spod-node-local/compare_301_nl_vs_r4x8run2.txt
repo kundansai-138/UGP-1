@@ -1,0 +1,9 @@
+EnegySpectra.txt: 15 values, max rel diff 3.03e-07
+mode 1: |cos angle| = 0.999999609759479, max rel diff after phase alignment 3.29e-02  (SPODMODE_freq_1_sigma_ 0.33004E+02.dat vs SPODMODE_freq_1_sigma_ 0.33004E+02.dat)
+mode 2: |cos angle| = 0.999999778551015, max rel diff after phase alignment 2.52e-02  (SPODMODE_freq_2_sigma_ 0.32396E+02.dat vs SPODMODE_freq_2_sigma_ 0.32396E+02.dat)
+mode 3: missing in one run
+mode 4: missing in one run
+mode 5: missing in one run
+RESULTS DIFFER
+(different Xcompact3d grids 10x16 vs 12x16: expect rounding-level, not bitwise, agreement;
+ modes 3-5 exist only in the old run)

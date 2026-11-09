@@ -1,0 +1,425 @@
+1794158889.203854910 # START spod
+1794158889.812 vtune: Warning: Cannot collect GPU hardware metrics due to a lack of permissions. Use root privileges (recommended) or re-configure your current permissions to make sure you are a member of the render group and /proc/sys/dev/i915/perf_stream_paranoid value is set to 0.
+1794158889.816 vtune: Warning: Cannot collect GPU hardware metrics due to a lack of permissions. Use root privileges (recommended) or re-configure your current permissions to make sure you are a member of the render group and /proc/sys/dev/i915/perf_stream_paranoid value is set to 0.
+1794158889.861 vtune: Warning: Cannot collect GPU hardware metrics due to a lack of permissions. Use root privileges (recommended) or re-configure your current permissions to make sure you are a member of the render group and /proc/sys/dev/i915/perf_stream_paranoid value is set to 0.
+1794158889.930 Authorization required, but no authorization protocol specified
+1794158889.931 Authorization required, but no authorization protocol specified
+1794158889.962 Authorization required, but no authorization protocol specified
+1794158890.030 vtune: Warning: Cannot collect GPU hardware metrics due to a lack of permissions. Use root privileges (recommended) or re-configure your current permissions to make sure you are a member of the render group and /proc/sys/dev/i915/perf_stream_paranoid value is set to 0.
+1794158890.357 Authorization required, but no authorization protocol specified
+1794158892.329  Number of MPI processes (size) =          32
+1794158892.330  numberOfDataInSnapShot =    109083604
+1794158892.331  numberOfSnapShot      =           31
+1794158892.331  nDFT                 =            8
+1794158892.331  nFreq                 =            5
+1794158892.331  percentageOfOverall  =   0.500000000    
+1794158892.331  nOvlp                =            4
+1794158892.331  filename             = (no files: ADIOS2 SST input)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+1794158893.592  winWeight on RANK 0   1.00000000    
+1794158893.754  ADIOS2 input: config = spod_sst.xml (found:  F )
+1794158893.754  ADIOS2 input: opening stream data engine SST
+1794158894.164  rank   24 rows  81812708:  85221569  var   pp  kz      0 +    38  points   3408862
+1794158894.164  rank    8 rows  27270904:  30679766  var   uy  kz      0 +    38  points   3408863
+1794158894.164  rank    9 rows  30679767:  34088629  var   uy  kz     37 +    39  points   3408863
+1794158894.164  rank   10 rows  34088630:  37497492  var   uy  kz     75 +    38  points   3408863
+1794158894.164  rank   11 rows  37497493:  40906355  var   uy  kz    112 +    39  points   3408863
+1794158894.164  rank   12 rows  40906356:  44315218  var   uy  kz    150 +    39  points   3408863
+1794158894.164  rank   13 rows  44315219:  47724081  var   uy  kz    188 +    38  points   3408863
+1794158894.164  rank   14 rows  47724082:  51132944  var   uy  kz    225 +    39  points   3408863
+1794158894.164  rank   15 rows  51132945:  54541807  var   uy  kz    263 +    38  points   3408857
+1794158894.164  rank   15 rows  51132945:  54541807  var   uz  kz      0 +     1  points         6
+1794158894.164  rank   25 rows  85221570:  88630431  var   pp  kz     37 +    39  points   3408862
+1794158894.164  rank   26 rows  88630432:  92039293  var   pp  kz     75 +    38  points   3408862
+1794158894.164  rank   27 rows  92039294:  95448155  var   pp  kz    112 +    39  points   3408862
+1794158894.164  rank   28 rows  95448156:  98857017  var   pp  kz    150 +    39  points   3408862
+1794158894.164  rank   29 rows  98857018: 102265879  var   pp  kz    188 +    38  points   3408862
+1794158894.164  rank   30 rows 102265880: 105674741  var   pp  kz    225 +    39  points   3408862
+1794158894.164  rank   31 rows 105674742: 109083603  var   pp  kz    263 +    38  points   3408862
+1794158894.164  rank   16 rows  54541808:  57950670  var   uz  kz      0 +    38  points   3408863
+1794158894.165  rank    0 rows         0:   3408862  var   ux  kz      0 +    38  points   3408863
+1794158894.165  rank   17 rows  57950671:  61359533  var   uz  kz     37 +    39  points   3408863
+1794158894.165  rank    1 rows   3408863:   6817725  var   ux  kz     37 +    39  points   3408863
+1794158894.165  rank   18 rows  61359534:  64768396  var   uz  kz     75 +    38  points   3408863
+1794158894.165  rank    2 rows   6817726:  10226588  var   ux  kz     75 +    38  points   3408863
+1794158894.165  rank   19 rows  64768397:  68177259  var   uz  kz    112 +    39  points   3408863
+1794158894.165  rank    3 rows  10226589:  13635451  var   ux  kz    112 +    39  points   3408863
+1794158894.165  rank   20 rows  68177260:  71586121  var   uz  kz    150 +    39  points   3408862
+1794158894.165  rank    4 rows  13635452:  17044314  var   ux  kz    150 +    39  points   3408863
+1794158894.165  rank   21 rows  71586122:  74994983  var   uz  kz    188 +    38  points   3408862
+1794158894.165  rank    5 rows  17044315:  20453177  var   ux  kz    188 +    38  points   3408863
+1794158894.165  rank   22 rows  74994984:  78403845  var   uz  kz    225 +    39  points   3408862
+1794158894.165  rank    6 rows  20453178:  23862040  var   ux  kz    225 +    39  points   3408863
+1794158894.165  rank   23 rows  78403846:  81812707  var   uz  kz    263 +    38  points   3408857
+1794158894.165  rank   23 rows  78403846:  81812707  var   pp  kz      0 +     1  points         5
+1794158894.165  rank    7 rows  23862041:  27270903  var   ux  kz    263 +    38  points   3408860
+1794158894.165  rank    7 rows  23862041:  27270903  var   uy  kz      0 +     1  points         3
+1794158908.144  -------------------------------------------
+1794158908.145  Processing Snapshot           1
+1794158908.146  -------------------------------------------
+1794159187.094  -------------------------------------------
+1794159187.096  Processing Snapshot           2
+1794159187.096  -------------------------------------------
+1794159466.333  -------------------------------------------
+1794159466.335  Processing Snapshot           3
+1794159466.335  -------------------------------------------
+1794159751.366  -------------------------------------------
+1794159751.367  Processing Snapshot           4
+1794159751.367  -------------------------------------------
+1794160046.047  -------------------------------------------
+1794160046.048  Processing Snapshot           5
+1794160046.048  -------------------------------------------
+1794160332.677  -------------------------------------------
+1794160332.678  Processing Snapshot           6
+1794160332.678  -------------------------------------------
+1794160604.928  -------------------------------------------
+1794160605.138  Processing Snapshot           7
+1794160605.138  -------------------------------------------
+1794160882.288  -------------------------------------------
+1794160882.288  Processing Snapshot           8
+1794160882.288  -------------------------------------------
+1794160882.754  -------------------------------------------
+1794160882.754  Processing Block
+1794160882.754  -------------------------------------------
+1794160882.754  Processing Block Realization           1
+1794160882.970  Processing Block Realization           2
+1794160883.182  Processing Block Realization           3
+1794160883.597  Processing Block Realization           4
+1794160883.811  Processing Block Realization           5
+1794160884.227  Processing Block Realization           6
+1794160884.449  Processing Block Realization           7
+1794160884.672  Processing Block Realization           8
+1794160885.025  -------------------------------------------
+1794160885.025  DONE : Processing Block
+1794160885.025  -------------------------------------------
+1794160885.995  -------------------------------------------
+1794160885.995  Processing Each Frequency
+1794160885.995  -------------------------------------------
+1794160885.995  Processing Frequency           1
+1794160886.411    6.5838285352482199E-014
+1794160886.412    0.0000000000000000     
+1794160886.413    0.0000000000000000     
+1794160886.414    0.0000000000000000     
+1794160887.406  Processing Frequency           2
+1794160887.801    53.072942731828974     
+1794160887.802    0.0000000000000000     
+1794160887.804    0.0000000000000000     
+1794160887.804    0.0000000000000000     
+1794160888.545  Processing Frequency           3
+1794160889.345    52.672793249373186     
+1794160889.347    0.0000000000000000     
+1794160889.348    0.0000000000000000     
+1794160889.350    0.0000000000000000     
+1794160890.427  Processing Frequency           4
+1794160890.827    52.604174338299238     
+1794160890.828    0.0000000000000000     
+1794160890.830    0.0000000000000000     
+1794160890.830    0.0000000000000000     
+1794160891.498  Processing Frequency           5
+1794160891.942    52.589863868821496     
+1794160891.943    0.0000000000000000     
+1794160891.944    0.0000000000000000     
+1794160891.945    0.0000000000000000     
+1794161163.858  -------------------------------------------
+1794161163.860  Processing Snapshot           9
+1794161163.860  -------------------------------------------
+1794161444.134  -------------------------------------------
+1794161444.135  Processing Snapshot          10
+1794161444.135  -------------------------------------------
+1794161716.313  -------------------------------------------
+1794161716.315  Processing Snapshot          11
+1794161716.315  -------------------------------------------
+1794162000.209  -------------------------------------------
+1794162000.210  Processing Snapshot          12
+1794162000.210  -------------------------------------------
+1794162000.675  -------------------------------------------
+1794162000.675  Processing Block
+1794162000.675  -------------------------------------------
+1794162000.675  Processing Block Realization           1
+1794162000.895  Processing Block Realization           2
+1794162001.110  Processing Block Realization           3
+1794162001.331  Processing Block Realization           4
+1794162001.760  Processing Block Realization           5
+1794162001.974  Processing Block Realization           6
+1794162002.188  Processing Block Realization           7
+1794162002.404  Processing Block Realization           8
+1794162002.974  -------------------------------------------
+1794162002.974  DONE : Processing Block
+1794162002.974  -------------------------------------------
+1794162003.559  -------------------------------------------
+1794162003.559  Processing Each Frequency
+1794162003.559  -------------------------------------------
+1794162003.559  Processing Frequency           1
+1794162004.498    14.042314035475581     
+1794162004.499    5.6767494254491682E-014
+1794162004.500    0.0000000000000000     
+1794162004.501    0.0000000000000000     
+1794162005.457  Processing Frequency           2
+1794162005.912    46.143181015772569     
+1794162005.916    5.8280118794299254     
+1794162005.916    0.0000000000000000     
+1794162005.916    0.0000000000000000     
+1794162007.084  Processing Frequency           3
+1794162007.522    45.667205470551380     
+1794162007.523    3.1909844016919493     
+1794162007.524    0.0000000000000000     
+1794162007.525    0.0000000000000000     
+1794162008.265  Processing Frequency           4
+1794162008.709    45.586386398346271     
+1794162008.712    2.4472735148940878     
+1794162008.714    0.0000000000000000     
+1794162008.715    0.0000000000000000     
+1794162009.453  Processing Frequency           5
+1794162009.881    45.569592928860075     
+1794162009.882    2.2619436613446533     
+1794162009.883    0.0000000000000000     
+1794162009.884    0.0000000000000000     
+1794162297.173  -------------------------------------------
+1794162297.174  Processing Snapshot          13
+1794162297.174  -------------------------------------------
+1794162581.265  -------------------------------------------
+1794162581.266  Processing Snapshot          14
+1794162581.266  -------------------------------------------
+1794162871.405  -------------------------------------------
+1794162871.406  Processing Snapshot          15
+1794162871.406  -------------------------------------------
+1794163142.882  -------------------------------------------
+1794163143.091  Processing Snapshot          16
+1794163143.091  -------------------------------------------
+1794163433.162  -------------------------------------------
+1794163433.162  Processing Snapshot          17
+1794163433.162  -------------------------------------------
+1794163433.632  -------------------------------------------
+1794163433.632  Processing Block
+1794163433.633  -------------------------------------------
+1794163433.633  Processing Block Realization           1
+1794163433.849  Processing Block Realization           2
+1794163434.062  Processing Block Realization           3
+1794163434.274  Processing Block Realization           4
+1794163434.502  Processing Block Realization           5
+1794163434.741  Processing Block Realization           6
+1794163434.957  Processing Block Realization           7
+1794163435.170  Processing Block Realization           8
+1794163435.544  -------------------------------------------
+1794163435.544  DONE : Processing Block
+1794163435.544  -------------------------------------------
+1794163436.382  -------------------------------------------
+1794163436.382  Processing Each Frequency
+1794163436.382  -------------------------------------------
+1794163436.382  Processing Frequency           1
+1794163437.894    14.826593717719154     
+1794163437.896    5.8328813468143785     
+1794163437.898    5.0008411398496079E-014
+1794163437.901    0.0000000000000000     
+1794163438.776  Processing Frequency           2
+1794163439.256    41.411299886235376     
+1794163439.257    6.8231857581630244     
+1794163439.258   0.75071141387844120     
+1794163439.259    0.0000000000000000     
+1794163440.452  Processing Frequency           3
+1794163441.142    40.885180156747985     
+1794163441.144    3.7439770798807981     
+1794163441.145   0.37638725102016113     
+1794163441.146    0.0000000000000000     
+1794163442.051  Processing Frequency           4
+1794163442.823    40.796485267870594     
+1794163442.824    2.8723313372501758     
+1794163442.825   0.28563025147295312     
+1794163442.826    2.4651903288156624E-032
+1794163444.305  Processing Frequency           5
+1794163444.783    40.778097511690000     
+1794163444.783    2.6549941628599085     
+1794163444.783   0.26343567072502599     
+1794163444.783    0.0000000000000000     
+1794163709.819  -------------------------------------------
+1794163709.819  Processing Snapshot          18
+1794163709.819  -------------------------------------------
+1794163980.270  -------------------------------------------
+1794163980.271  Processing Snapshot          19
+1794163980.271  -------------------------------------------
+1794164262.568  -------------------------------------------
+1794164262.569  Processing Snapshot          20
+1794164262.569  -------------------------------------------
+1794164538.881  -------------------------------------------
+1794164538.881  Processing Snapshot          21
+1794164538.881  -------------------------------------------
+1794164539.344  -------------------------------------------
+1794164539.344  Processing Block
+1794164539.344  -------------------------------------------
+1794164539.344  Processing Block Realization           1
+1794164539.567  Processing Block Realization           2
+1794164539.781  Processing Block Realization           3
+1794164539.994  Processing Block Realization           4
+1794164540.208  Processing Block Realization           5
+1794164540.422  Processing Block Realization           6
+1794164540.850  Processing Block Realization           7
+1794164541.063  Processing Block Realization           8
+1794164541.419  -------------------------------------------
+1794164541.419  DONE : Processing Block
+1794164541.419  -------------------------------------------
+1794164542.038  -------------------------------------------
+1794164542.038  Processing Each Frequency
+1794164542.038  -------------------------------------------
+1794164542.038  Processing Frequency           1
+1794164542.555    15.570819518455021     
+1794164542.556    9.3282727235230034     
+1794164542.557   0.39267994888143226     
+1794164542.558    4.5546720015360835E-014
+1794164543.717  Processing Frequency           2
+1794164545.115    37.918406590215561     
+1794164545.118    7.1941438844921448     
+1794164545.120    1.1059284895368644     
+1794164545.121   0.33253644386314946     
+1794164546.496  Processing Frequency           3
+1794164547.024    37.355026660179824     
+1794164547.024    3.9545042959324013     
+1794164547.024   0.56635070271355792     
+1794164547.024   0.14732859790866534     
+1794164548.184  Processing Frequency           4
+1794164548.705    37.260582961453018     
+1794164548.706    3.0347128292193455     
+1794164548.707   0.43030084248551975     
+1794164548.708   0.11007441801365031     
+1794164549.870  Processing Frequency           5
+1794164550.617    37.241035694772712     
+1794164550.626    2.8052537914178535     
+1794164550.633   0.39696006789422172     
+1794164550.640   0.10120069667958366     
+1794164820.919  -------------------------------------------
+1794164820.919  Processing Snapshot          22
+1794164820.919  -------------------------------------------
+1794165092.205  -------------------------------------------
+1794165092.206  Processing Snapshot          23
+1794165092.206  -------------------------------------------
+1794165368.210  -------------------------------------------
+1794165368.211  Processing Snapshot          24
+1794165368.211  -------------------------------------------
+1794165656.909  -------------------------------------------
+1794165656.910  Processing Snapshot          25
+1794165656.910  -------------------------------------------
+1794165925.246  -------------------------------------------
+1794165925.246  Processing Snapshot          26
+1794165925.246  -------------------------------------------
+1794165925.710  -------------------------------------------
+1794165925.710  Processing Block
+1794165925.710  -------------------------------------------
+1794165925.710  Processing Block Realization           1
+1794165925.933  Processing Block Realization           2
+1794165926.155  Processing Block Realization           3
+1794165926.580  Processing Block Realization           4
+1794165926.792  Processing Block Realization           5
+1794165927.004  Processing Block Realization           6
+1794165927.215  Processing Block Realization           7
+1794165927.426  Processing Block Realization           8
+1794165927.779  -------------------------------------------
+1794165927.779  DONE : Processing Block
+1794165927.779  -------------------------------------------
+1794165928.586  -------------------------------------------
+1794165928.586  Processing Each Frequency
+1794165928.586  -------------------------------------------
+1794165928.586  Processing Frequency           1
+1794165929.497    18.207861459938950     
+1794165929.498    11.397632883880252     
+1794165929.500   0.93854607703585813     
+1794165929.503   0.18444685817076917     
+1794165930.663  Processing Frequency           2
+1794165931.189    35.198772439828915     
+1794165931.190    7.2744141404872904     
+1794165931.191    1.4311314541121971     
+1794165931.192   0.63082460717074540     
+1794165932.566  Processing Frequency           3
+1794165933.552    34.609930308645176     
+1794165933.553    4.0050563552225729     
+1794165933.555   0.74151200695897468     
+1794165933.560   0.30256573510821300     
+1794165934.933  Processing Frequency           4
+1794165935.674    34.511621969040966     
+1794165935.676    3.0742982805385317     
+1794165935.677   0.56393299202273228     
+1794165935.678   0.22772297605194788     
+1794165936.843  Processing Frequency           5
+1794165937.357    34.491298605272085     
+1794165937.359    2.8419959550684211     
+1794165937.361   0.52033627727040976     
+1794165937.361   0.20967438039329275     
+1794166204.439  -------------------------------------------
+1794166204.440  Processing Snapshot          27
+1794166204.440  -------------------------------------------
+1794166483.659  -------------------------------------------
+1794166483.661  Processing Snapshot          28
+1794166483.661  -------------------------------------------
+1794166768.886  -------------------------------------------
+1794166768.888  Processing Snapshot          29
+1794166768.888  -------------------------------------------
+1794167045.557  -------------------------------------------
+1794167045.558  Processing Snapshot          30
+1794167045.558  -------------------------------------------
+1794167046.020  -------------------------------------------
+1794167046.020  Processing Block
+1794167046.020  -------------------------------------------
+1794167046.020  Processing Block Realization           1
+1794167046.241  Processing Block Realization           2
+1794167046.456  Processing Block Realization           3
+1794167046.669  Processing Block Realization           4
+1794167046.884  Processing Block Realization           5
+1794167047.096  Processing Block Realization           6
+1794167047.309  Processing Block Realization           7
+1794167047.523  Processing Block Realization           8
+1794167047.881  -------------------------------------------
+1794167047.881  DONE : Processing Block
+1794167047.881  -------------------------------------------
+1794167048.253  -------------------------------------------
+1794167048.253  Processing Each Frequency
+1794167048.253  -------------------------------------------
+1794167048.253  Processing Frequency           1
+1794167048.789    22.241754781514466     
+1794167048.790    11.663788911228391     
+1794167048.792    1.3961623799630940     
+1794167048.793   0.40190459305383541     
+1794167049.954  Processing Frequency           2
+1794167050.474    33.004370215120247     
+1794167050.475    7.2525361689688301     
+1794167050.476    1.7046044742551338     
+1794167050.477   0.73210704459407971     
+1794167051.637  Processing Frequency           3
+1794167052.164    32.396496912174001     
+1794167052.166    3.9984544123041541     
+1794167052.167   0.88528157758846859     
+1794167052.168   0.36312528608719530     
+1794167053.349  Processing Frequency           4
+1794167053.875    32.295348950676633     
+1794167053.876    3.0699101850158250     
+1794167053.877   0.67337887874081193     
+1794167053.879   0.27435516941431992     
+1794167055.254  Processing Frequency           5
+1794167056.070    32.274457814426285     
+1794167056.071    2.8380682291792105     
+1794167056.072   0.62133910368239387     
+1794167056.073   0.25280515369739653     
+1794167315.948  -------------------------------------------
+1794167315.949  Processing Snapshot          31
+1794167315.949  -------------------------------------------
+1794167316.309  Snapshots consumed           :           31
+1794167316.309  Max over ranks, wait in begin_step [s]:    8076.7434332050016     
+1794167316.309  Max over ranks, get + copy      [s]:    267.79156142699958     
+1794167316.309  Max over ranks, SPOD compute    [s]:    83.886996432997421     
+1794167317.543  Saved Enegy spectra to File EnegySpectra.txt 
+1794167360.448  Eigen values at index            1  Globally in Uhat at            3
+1794167360.449 Saved SPOD mode 1 with sigma value  0.33004E+02 to file: SPODMODE_freq_1_sigma_ 0.33004E+02.dat
+1794167402.075  Eigen values at index            2  Globally in Uhat at            6
+1794167402.075 Saved SPOD mode 2 with sigma value  0.32396E+02 to file: SPODMODE_freq_2_sigma_ 0.32396E+02.dat
+1794167448.610  Eigen values at index            3  Globally in Uhat at            9
+1794167448.610 Saved SPOD mode 3 with sigma value  0.32295E+02 to file: SPODMODE_freq_3_sigma_ 0.32295E+02.dat
+1794167501.428  Eigen values at index            4  Globally in Uhat at           12
+1794167501.428 Saved SPOD mode 4 with sigma value  0.32274E+02 to file: SPODMODE_freq_4_sigma_ 0.32274E+02.dat
+1794167532.782 
+1794167532.782 vtune: Warning: Cannot collect GPU hardware metrics due to a lack of permissions. Use root privileges (recommended) or re-configure your current permissions to make sure you are a member of the render group and /proc/sys/dev/i915/perf_stream_paranoid value is set to 0.
+1794167540.902 
+1794167540.902 vtune: Warning: Cannot collect GPU hardware metrics due to a lack of permissions. Use root privileges (recommended) or re-configure your current permissions to make sure you are a member of the render group and /proc/sys/dev/i915/perf_stream_paranoid value is set to 0.
+1794167543.449 
+1794167543.449 vtune: Warning: Cannot collect GPU hardware metrics due to a lack of permissions. Use root privileges (recommended) or re-configure your current permissions to make sure you are a member of the render group and /proc/sys/dev/i915/perf_stream_paranoid value is set to 0.
+1794167543.693 
+1794167543.693 vtune: Warning: Cannot collect GPU hardware metrics due to a lack of permissions. Use root privileges (recommended) or re-configure your current permissions to make sure you are a member of the render group and /proc/sys/dev/i915/perf_stream_paranoid value is set to 0.
+1794167560.340  Eigen values at index            0  Globally in Uhat at            0
+1794167560.340 Saved SPOD mode 5 with sigma value  0.22242E+02 to file: SPODMODE_freq_5_sigma_ 0.22242E+02.dat
+1794167560.406 Intel(R) VTune(TM) Profiler 2025.7.0 collection completed successfully. Use the "aps --report /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120/run2/aps_spod" command to generate textual and HTML reports for the profiling session.
+1794167560.414008787 # END rc=0

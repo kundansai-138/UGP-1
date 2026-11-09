@@ -1,0 +1,95 @@
+Loading   0.0%Loading  14.29%Loading  14.88%Loading  15.48%Loading  16.67%Loading  17.26%Loading  18.45%Loading  19.05%Loading  19.64%Loading  20.24%Loading  20.83%Loading  21.43%Loading  22.02%Loading  22.62%Loading  23.21%Loading  23.81%Loading  25.00%Loading  26.79%Loading  27.38%Loading  27.98%Loading  28.57%Loading  29.17%Loading  29.76%Loading  30.36%Loading  30.95%Loading  31.55%Loading  32.14%Loading  32.74%Loading  33.33%Loading  33.93%Loading  35.12%Loading  36.31%Loading  36.90%Loading  37.50%Loading  38.10%Loading  38.69%Loading  39.29%Loading  39.88%Loading  40.48%Loading  41.07%Loading  41.67%Loading  42.26%Loading  42.86%Loading  43.45%Loading  44.05%Loading  45.24%Loading  46.43%Loading  47.02%Loading  47.62%Loading  48.21%Loading  48.81%Loading  50.00%Loading  50.60%Loading  51.19%Loading  51.79%Loading  52.38%Loading  52.98%Loading  53.57%Loading  54.76%Loading  55.36%Loading  55.95%Loading  56.55%Loading  57.74%Loading  58.93%Loading  59.52%Loading  60.71%Loading  61.31%Loading  61.90%Loading  62.50%Loading  63.10%Loading  63.69%Loading  64.88%Loading  65.48%Loading  66.07%Loading  66.67%Loading  67.26%Loading  67.86%Loading  69.64%Loading  70.24%Loading  70.83%Loading  71.43%Loading  72.02%Loading  73.21%Loading  73.81%Loading  74.40%Loading  75.60%Loading  76.19%Loading  76.79%Loading  77.98%Loading  78.57%Loading  79.17%Loading  79.76%Loading  80.36%Loading  80.95%Loading  82.14%Loading  82.74%Loading  83.33%Loading  83.93%Loading  84.52%Loading  85.12%Loading  85.71%Loading  86.31%Loading  86.90%Loading  87.50%Loading  88.10%Loading  89.29%Loading  89.88%Loading  90.48%Loading  91.07%Loading  91.67%Loading  92.26%Loading  92.86%Loading  93.45%Loading  94.05%Loading  94.64%Loading  95.24%Loading  95.83%Loading  96.43%Loading  97.02%Loading  97.62%Loading  98.21%Loading  98.81%Loading  99.40%Loading 100.00%Finalizing...| Summary information
+|--------------------------------------------------------------------
+  Application                   : xcompact3d
+  Report creation date          : 2026-11-09 05:16:41
+  Number of ranks               : 160
+  Ranks per node                : 20
+  HW Platform                   : Intel(R) microarchitecture code named Raptorlake-DT
+  Frequency                     : 2.11 GHz
+  Logical core count per node   : 24
+  Collector type                : Driverless Perf system-wide counting
+  Used statistics               : /users/btech/ckundans23/spod-dev/runs/S4_coloc_nl/S4_r8x4_20261109_0516/run1/aps
+|
+| Your application might underutilize the available logical CPU cores
+| because of insufficient parallel work, blocking on synchronization, or too much I/O. Perform function or source line-level profiling with tools like Intel(R) VTune(TM) Profiler to discover why the CPU is underutilized.
+|
+  Elapsed Time:                            6630.60 s
+  SP GFLOPS:                                  0.00
+  DP GFLOPS:                                  1.98
+  Average CPU Frequency:                      3.07 GHz
+  IPC Rate:                                   2.24
+  MPI Time:                                6547.50 s            98.75% of Elapsed Time
+| Your application is MPI bound. This may be caused by high busy wait time
+| inside the library (imbalance), non-optimal communication schema or MPI
+| library settings. Explore the MPI Imbalance metric if it is available or use
+| MPI profiling tools like Intel(R) Trace Analyzer and Collector to explore
+| possible performance bottlenecks.
+    MPI Imbalance:                         3939.55 s            59.42% of Elapsed Time
+| The application workload is not well balanced between MPI ranks.For more
+| details about the MPI communication scheme use Intel(R) Trace Analyzer and
+| Collector.
+    Top 5 MPI functions (avg time):
+        MPI_Alltoallv:                     6171.46 s            93.08% of Elapsed Time
+        MPI_Reduce:                         338.80 s             5.11% of Elapsed Time
+        MPI_Barrier:                         17.82 s             0.27% of Elapsed Time
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Hotspot 3 - MPI_Barrier" reports for
+| details.
+        MPI_Gather:                          15.90 s             0.24% of Elapsed Time
+        MPI_Bcast:                            1.61 s             0.02% of Elapsed Time
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Hotspot 5 - MPI_Bcast" reports for
+| details.
+  Physical Core Utilization:                 84.19%
+  Average Physical Core Utilization:         13.47 out of 16 Physical Cores
+  Memory Stalls:                              6.19% of Pipeline Slots
+    Cache Stalls:                            17.66% of Cycles
+    DRAM Stalls:                              1.31% of Cycles
+       Average DRAM Bandwidth:                 N/A
+| Data for this metric is not collected since it requires system-wide
+| performance monitoring. Make sure the sampling driver is properly installed on
+| your system:
+| https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/current/sep-driver.html.
+| Otherwise, enable a driverless Perf-based sampling collection by setting the
+| /proc/sys/kernel/perf_even_paranoid value to 0 or less.
+  Vectorization:                             40.11%
+| A significant fraction of floating point arithmetic instructions are scalar.
+| Use Intel Advisor to see possible reasons why the code was not vectorized.
+     Instruction Mix:
+       SP FLOPs:                              0.00% of uOps
+       DP FLOPs:                              0.20% of uOps
+          Packed:                            40.10% from DP FP
+             128-bit:                        40.10%
+| A significant fraction of floating point arithmetic vector instructions
+| executed with partial vector load. A possible reason is compilation with a
+| legacy instruction set. Check the compiler options. Another possible reason is
+| compiler code generation specifics. Use Intel(R) Advisor to learn more.
+             256-bit:                         0.00%
+          Scalar:                            59.90% from DP FP
+| A significant fraction of floating point arithmetic instructions are scalar.
+| Use Intel(R) Advisor to see possible reasons why the code was not vectorized.
+       Non-FP:                               99.80% of uOps
+ Disk I/O Bound:                              0.00 s             0.00% of Elapsed Time
+      Disk read:                               3.8 KB
+      Disk write:                             10.4 MB
+ Memory Footprint:
+ Resident:
+       Per node:
+           Peak resident set size    :         5518.00 MB (node csews167)
+           Average resident set size :         5413.25 MB
+       Per rank:
+           Peak resident set size    :          281.00 MB (rank 157)
+           Average resident set size :          270.66 MB
+ Virtual:
+       Per node:
+           Peak memory consumption    :        10844.00 MB (node csews167)
+           Average memory consumption :        10759.25 MB
+       Per rank:
+           Peak memory consumption    :          546.00 MB (rank 156)
+           Average memory consumption :          537.96 MB
+
+Graphical representation of this data is available in the HTML report: /users/btech/ckundans23/spod-dev/runs/S4_coloc_nl/S4_r8x4_20261109_0516/aps_report_20261109_071037.html

@@ -1,0 +1,29 @@
+date    : 2026-11-04T13:47:27+05:30
+binary  : /users/btech/ckundans23/ugp/src/x3d_lab/xcompact3d (md5 c4520a31abfb0667c6194320ab92145c)
+launch  : /usr/local/bin/mpirun -f /users/btech/ckundans23/ugp/tools/hostfile -np 192 -ppn 24
+case fs : nfs    nfs2.cse.iitk.ac.in:/cse21/btech
+--- libraries
+	libmpifort.so.12 => /usr/local/lib/libmpifort.so.12 (0x0000759c8a438000)
+	libmpi.so.12 => /usr/local/lib/libmpi.so.12 (0x0000759c88800000)
+--- input (S0)
+ivisu=0   ! added by basecase.sh (zero snapshots)
+p_row=0               ! Row partition
+p_col=0               ! Column partition
+nx=301                ! X-direction nodes 		241, 481, 481
+ny=301                ! Y-direction nodes		240, 480, 960
+nz=301                ! Z-direction nodes		240, 480, 960
+ilast = 150        ! Last iteration
+iibm=3                ! Flag for immersed boundary method
+icheckpoint = 151  ! Frequency for writing backup file		1000
+ioutput = 151         ! Frequency for visualization			500
+ilist = 1            ! Frequency for writing to screen 	50       
+ nraf=10			!10  ! level of refinement for (iibm=2 0r iibm=4) to find the surface of the immersed object
+--- machines (name, cpu, logical cpus, RAM GB, network card speed Mb/s, load average)
+csews160 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 2.70 5.96 6.31
+csews161 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 2.68 5.87 6.23
+csews162 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 2.67 6.11 6.33
+csews163 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 3.02 6.20 6.37
+csews164 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 2.86 6.42 6.50
+csews165 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 2.83 6.43 6.52
+csews166 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 2.76 6.28 6.44
+csews167 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 2.78 6.38 6.50

@@ -1,0 +1,12 @@
+Reader wait analysis: /users/btech/ckundans23/spod-dev/runs/quick65_nl/S4_r8x4_20261108_2233  (layout 8x4)
+
+run1: 16 snapshots, 32 reader ranks, 160 writer ranks (engine /users/btech/ckundans23/spod-dev/runs/quick65_nl/S4_r8x4_20261108_2233/data)
+  reader wait  first 1.2 s (includes solver start-up), then per snapshot median 6.75 s, max 10.49 s, total 100.5 s
+  reader busy  read 0.050 s (max 0.308), compute 0.015 s (max 1.871), last snapshot 0.03 s
+  reader idle  95.9 %   headroom 83.2x   rank spread of wait 0.004 s
+  writer       end_step median 0.485 s, max 1.545 s, total 9.17 s; close 0.33 s; queue time 0.018 s
+  bursts       2 block end(s) (found from log): max 1.87 s vs ordinary 0.012 s; mean removal max 0.05 s, frequency loop max 1.79 s
+               snapshot interval T 5.7 s (writer), QueueLimit 2 -> absorbs read + burst up to 17.0 s; QueueLimit needed >= 1; smallest margin 14.9 s; writer end_step after a burst max 1.310 s
+               step    7: compute 0.65 s (mean removal 0.05, frequency loop 0.35), read 0.05 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.215 s
+               step   11: compute 1.87 s (mean removal 0.04, frequency loop 1.79), read 0.18 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.310 s
+

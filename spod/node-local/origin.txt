@@ -1,0 +1,5 @@
+set up : 2026-11-08T21:38:32+05:30 on csews180
+old src: /users/btech/ckundans23/ugp/src/SPOD-adios2/Streaming SPOD/streamingSPODModule.F90 (md5 68ac1a48e8f0c887cfbbe47ada7a8bcd)
+x3d bin: /users/btech/ckundans23/ugp/src/x3d_lab_adios/xcompact3d (md5 a1dad1fb55fb0decc6e3095d2d041add)
+case   : /users/btech/ckundans23/ugp/runs/testcase_adios
+nl src : src/spod_nl.F90 (md5 66b8e251511102a60b492e770c93eec6)

@@ -1,0 +1,5 @@
+             run         exit_code            wall_s            init_s            loop_s             end_s             steps        step_lines         snapshots          restarts         restart_s     step_median_s        step_min_s        step_max_s  cpu_busy_mean_pct   mem_peak_max_gb     mem_peak_host
+            run1                 0           6153.21             14.23           6080.61             58.37               150               150                 0                 0                 0            41.241            33.878            47.668             100.0             12.42          csews165
+            run2               255            134.85                                                                       0                 0                 0                 0                 0                                                                                      5.88          csews160
+
+S0 result (median of 1 runs): wall 6153.2 s, step 41.2410 s, peak memory 12.42 GB

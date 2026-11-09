@@ -1,0 +1,97 @@
+Loading   0.0%Loading  46.15%Loading  50.00%Loading  57.69%Loading  61.54%Loading  63.46%Loading  65.38%Loading  67.31%Loading  69.23%Loading  71.15%Loading  73.08%Loading  75.00%Loading  76.92%Loading  78.85%Loading  82.69%Loading  86.54%Loading  88.46%Loading  90.38%Loading  92.31%Loading  94.23%Loading  96.15%Loading  98.08%Loading 100.00%Finalizing...| Summary information
+|--------------------------------------------------------------------
+  Application                   : streamingSPOD
+  Report creation date          : 2026-11-04 19:53:37
+  Number of ranks               : 48
+  Ranks per node                : 12
+  HW Platform                   : Intel(R) microarchitecture code named Raptorlake-DT
+  Frequency                     : 2.11 GHz
+  Logical core count per node   : 24
+  Collector type                : Driverless Perf system-wide counting
+  Used statistics               : /users/btech/ckundans23/ugp/runs/S4/S4_20261104_1953/run1/aps_spod
+|
+| Your application might underutilize the available logical CPU cores
+| because of insufficient parallel work, blocking on synchronization, or too much I/O. Perform function or source line-level profiling with tools like Intel(R) VTune(TM) Profiler to discover why the CPU is underutilized.
+|
+  Elapsed Time:                            5540.33 s
+  SP GFLOPS:                                  0.03
+  DP GFLOPS:                                  0.19
+  Average CPU Frequency:                      3.45 GHz
+  IPC Rate:                                   4.66
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="Instructions Per Cycle Rate" reports for
+| details.
+  MPI Time:                                5162.96 s            93.24% of Elapsed Time
+| Your application is MPI bound. This may be caused by high busy wait time
+| inside the library (imbalance), non-optimal communication schema or MPI
+| library settings. Explore the MPI Imbalance metric if it is available or use
+| MPI profiling tools like Intel(R) Trace Analyzer and Collector to explore
+| possible performance bottlenecks.
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Time" reports for details.
+    MPI Imbalance:                            N/A*
+| * No information about MPI Imbalance time is available. Set APS_IMBALANCE_TYPE
+| to 1 or 2 to collect it.
+    Top 5 MPI functions (avg time):
+        MPI_Bcast:                         5034.57 s            90.92% of Elapsed Time
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Hotspot 1 - MPI_Bcast" reports for
+| details.
+        MPI_Barrier:                         46.85 s             0.85% of Elapsed Time
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Hotspot 2 - MPI_Barrier" reports for
+| details.
+        MPI_Send:                            40.81 s             0.74% of Elapsed Time
+        MPI_Allgather:                       29.55 s             0.53% of Elapsed Time
+        MPI_Init:                             3.94 s             0.07% of Elapsed Time
+  Physical Core Utilization:                 57.48%
+| The metric is below 80% threshold, which may signal a poor physical CPU cores
+| utilization caused by: load imbalance, threading runtime overhead, contended
+| synchronization, insufficient parallelism, incorrect affinity that utilizes
+| logical cores instead of physical cores. Perform threading analysis with tools
+| like Intel(R) VTune(TM) Profiler to discover why physical cores are
+| underutilized.
+  Average Physical Core Utilization:          9.20 out of 16 Physical Cores
+  Memory Stalls:                              8.32% of Pipeline Slots
+    Cache Stalls:                             5.35% of Cycles
+    DRAM Stalls:                              0.90% of Cycles
+       Average DRAM Bandwidth:                 N/A
+| Data for this metric is not collected since it requires system-wide
+| performance monitoring. Make sure the sampling driver is properly installed on
+| your system:
+| https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/current/sep-driver.html.
+| Otherwise, enable a driverless Perf-based sampling collection by setting the
+| /proc/sys/kernel/perf_even_paranoid value to 0 or less.
+  Vectorization:                             27.70%
+     Instruction Mix:
+       SP FLOPs:                              0.00% of uOps
+       DP FLOPs:                              0.00% of uOps
+       Non-FP:                              100.00% of uOps
+ Disk I/O Bound:                              0.02 s             0.00% of Elapsed Time
+      Disk read:                              12.6 MB
+      Disk write:                              2.0 KB
+ Memory Footprint:
+ Resident:
+       Per node:
+           Peak resident set size    :        21728.00 MB (node csews168)
+           Average resident set size :        21250.75 MB
+       Per rank:
+           Peak resident set size    :         2407.00 MB (rank 0)
+           Average resident set size :         1770.90 MB
+ Virtual:
+       Per node:
+           Peak memory consumption    :        24595.00 MB (node csews168)
+           Average memory consumption :        24095.75 MB
+       Per rank:
+           Peak memory consumption    :         2676.00 MB (rank 0)
+           Average memory consumption :         2007.98 MB
+
+Graphical representation of this data is available in the HTML report: /users/btech/ckundans23/ugp/runs/S4/S4_20261104_1953/aps_report_20261104_212653.html

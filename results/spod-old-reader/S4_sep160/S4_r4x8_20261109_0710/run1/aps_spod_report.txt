@@ -1,0 +1,113 @@
+Loading   0.0%Loading  66.67%Loading  69.44%Loading  72.22%Loading  77.78%Loading  88.89%Loading  94.44%Loading  97.22%Loading 100.00%Finalizing...| Summary information
+|--------------------------------------------------------------------
+  Application                   : streamingSPOD
+  Report creation date          : 2026-11-09 07:10:52
+  Number of ranks               : 32
+  Ranks per node                : 8
+  HW Platform                   : Intel(R) microarchitecture code named Raptorlake-DT
+  Frequency                     : 2.11 GHz
+  Logical core count per node   : 24
+  Collector type                : Driverless Perf system-wide counting
+  Used statistics               : /users/btech/ckundans23/ugp/runs/S4_sep160/S4_r4x8_20261109_0710/run1/aps_spod
+|
+| Your application might underutilize the available logical CPU cores
+| because of insufficient parallel work, blocking on synchronization, or too much I/O. Perform function or source line-level profiling with tools like Intel(R) VTune(TM) Profiler to discover why the CPU is underutilized.
+|
+  Elapsed Time:                            6849.69 s
+  SP GFLOPS:                                  0.00
+  DP GFLOPS:                                  0.22
+  Average CPU Frequency:                      3.83 GHz
+  IPC Rate:                                   5.25
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="Instructions Per Cycle Rate" reports for
+| details.
+  MPI Time:                                6356.92 s            92.98% of Elapsed Time
+| Your application is MPI bound. This may be caused by high busy wait time
+| inside the library (imbalance), non-optimal communication schema or MPI
+| library settings. Explore the MPI Imbalance metric if it is available or use
+| MPI profiling tools like Intel(R) Trace Analyzer and Collector to explore
+| possible performance bottlenecks.
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Time" reports for details.
+    MPI Imbalance:                         6308.27 s            92.27% of Elapsed Time
+| The application workload is not well balanced between MPI ranks.For more
+| details about the MPI communication scheme use Intel(R) Trace Analyzer and
+| Collector.
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Imbalance" reports for details.
+    Top 5 MPI functions (avg time):
+        MPI_Bcast:                         6287.96 s            91.96% of Elapsed Time
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Hotspot 1 - MPI_Bcast" reports for
+| details.
+        MPI_Send:                            40.88 s             0.60% of Elapsed Time
+        MPI_Barrier:                         20.55 s             0.30% of Elapsed Time
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Hotspot 3 - MPI_Barrier" reports for
+| details.
+        MPI_Allgather:                        4.00 s             0.06% of Elapsed Time
+        MPI_Recv:                             1.76 s             0.03% of Elapsed Time
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Hotspot 5 - MPI_Recv" reports for
+| details.
+  Physical Core Utilization:                 47.22%
+| The metric is below 80% threshold, which may signal a poor physical CPU cores
+| utilization caused by: load imbalance, threading runtime overhead, contended
+| synchronization, insufficient parallelism, incorrect affinity that utilizes
+| logical cores instead of physical cores. Perform threading analysis with tools
+| like Intel(R) VTune(TM) Profiler to discover why physical cores are
+| underutilized.
+  Average Physical Core Utilization:          7.56 out of 16 Physical Cores
+  Memory Stalls:                             26.70% of Pipeline Slots
+| The metric value can indicate that a significant fraction of execution
+| pipeline slots could be stalled due to demand memory load and stores. See the
+| second level metrics to define if the application is cache- or DRAM-bound and
+| the NUMA efficiency. Use Intel(R) VTune(TM) Profiler Memory Access analysis to
+| review a detailed metric breakdown by memory hierarchy, memory bandwidth
+| information, and correlation by memory objects.
+    Cache Stalls:                            15.35% of Cycles
+    DRAM Stalls:                              2.92% of Cycles
+       Average DRAM Bandwidth:                 N/A
+| Data for this metric is not collected since it requires system-wide
+| performance monitoring. Make sure the sampling driver is properly installed on
+| your system:
+| https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/current/sep-driver.html.
+| Otherwise, enable a driverless Perf-based sampling collection by setting the
+| /proc/sys/kernel/perf_even_paranoid value to 0 or less.
+  Vectorization:                             25.75%
+     Instruction Mix:
+       SP FLOPs:                              0.00% of uOps
+       DP FLOPs:                              0.00% of uOps
+       Non-FP:                              100.00% of uOps
+ Disk I/O Bound:                              0.00 s             0.00% of Elapsed Time
+      Disk read:                              80.8 MB
+      Disk write:                              7.7 KB
+ Memory Footprint:
+ Resident:
+       Per node:
+           Peak resident set size    :        21209.00 MB (node csews168)
+           Average resident set size :        20967.50 MB
+       Per rank:
+           Peak resident set size    :         2931.00 MB (rank 0)
+           Average resident set size :         2620.94 MB
+ Virtual:
+       Per node:
+           Peak memory consumption    :        23126.00 MB (node csews168)
+           Average memory consumption :        22842.50 MB
+       Per rank:
+           Peak memory consumption    :         3221.00 MB (rank 0)
+           Average memory consumption :         2855.31 MB
+
+Graphical representation of this data is available in the HTML report: /users/btech/ckundans23/ugp/runs/S4_sep160/S4_r4x8_20261109_0710/aps_report_20261109_090548.html

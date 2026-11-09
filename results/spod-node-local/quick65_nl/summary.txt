@@ -1,0 +1,18 @@
+                run              readers            writer_rc              spod_rc               wall_s          sst_ready_s               init_s               loop_s                end_s          spod_wall_s  spod_after_writer_s                steps            snapshots        step_median_s    snap_step_extra_s           step_max_s   mem_peak_writer_gb   mem_peak_reader_gb        mem_peak_host
+               run1                  8x4                    0                    0               158.41                30.03                35.73                98.01                24.66                129.0                 0.64                   15                   16                6.886                0.115               10.569                 2.44                 2.44             csews181
+
+S4 result, reader 8x4 (median of 1 runs): wall 158.4 s, plain step 6.8860 s, extra per snapshot step 0.115 s
+
+--- SPOD timing lines (run1, last 12)
+   Processing Block
+   Processing Block Realization           1
+   Processing Block Realization           2
+   Processing Block Realization           3
+   Processing Block Realization           4
+   Processing Block Realization           5
+   Processing Block Realization           6
+   Processing Block Realization           7
+   Processing Block Realization           8
+   DONE : Processing Block
+   Max over ranks, wait in begin_step [s]:    101.91420962200002
+   Max over ranks, SPOD compute    [s]:    3.1268446179999501

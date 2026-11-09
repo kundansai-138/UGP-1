@@ -1,0 +1,33 @@
+                run              readers            writer_rc              spod_rc               wall_s          sst_ready_s               init_s               loop_s                end_s          spod_wall_s  spod_after_writer_s                steps            snapshots        step_median_s    snap_step_extra_s           step_max_s   mem_peak_writer_gb   mem_peak_reader_gb        mem_peak_host
+               run1                  4x8                    0                    0              5539.64                 6.01                11.91              5477.81                49.93              5772.74               239.11                  150                   31               35.413                4.586               43.881                  9.0                24.86             csews170
+               run2                  4x8                    0                    0              8447.14                14.03                23.86              8349.11                74.17              8671.21                238.1                  150                   31               53.823                7.785               70.996                 8.94                24.89             csews170
+
+S4 result, reader 4x8 (median of 2 runs): wall 6993.4 s, plain step 44.6180 s, extra per snapshot step 6.186 s
+
+--- SPOD timing lines (run1, last 12)
+   Processing Block
+   Processing Block Realization           1
+   Processing Block Realization           2
+   Processing Block Realization           3
+   Processing Block Realization           4
+   Processing Block Realization           5
+   Processing Block Realization           6
+   Processing Block Realization           7
+   Processing Block Realization           8
+   DONE : Processing Block
+   Max over ranks, wait in begin_step [s]:    5226.1836788099999
+   Max over ranks, SPOD compute    [s]:    81.902447078000478
+
+--- SPOD timing lines (run2, last 12)
+   Processing Block
+   Processing Block Realization           1
+   Processing Block Realization           2
+   Processing Block Realization           3
+   Processing Block Realization           4
+   Processing Block Realization           5
+   Processing Block Realization           6
+   Processing Block Realization           7
+   Processing Block Realization           8
+   DONE : Processing Block
+   Max over ranks, wait in begin_step [s]:    8076.7434332050016
+   Max over ranks, SPOD compute    [s]:    83.886996432997421

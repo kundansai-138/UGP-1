@@ -1,0 +1,29 @@
+Loading   0.0%Loading  12.00%Loading  12.50%Loading  13.00%Loading  13.50%Loading  14.00%Loading  14.50%Loading  15.00%Loading  15.50%Loading  17.00%Loading  18.50%Loading  19.00%Loading  20.00%Loading  21.00%Loading  22.00%Loading  22.50%Loading  24.00%Loading  25.00%Loading  26.00%Loading  27.00%Loading  28.00%Loading  29.00%Loading  29.50%Loading  34.50%Loading  35.00%Loading  36.00%Loading  36.50%Loading  37.00%Loading  38.00%Loading  38.50%Loading  43.00%Loading  46.50%Loading  48.50%Loading  49.00%Loading  49.50%Loading  51.50%Loading  52.50%Loading  54.50%Loading  55.00%Loading  57.00%Loading  57.50%Loading  58.50%Loading  59.50%Loading  63.00%Loading  63.50%Loading  67.50%Loading  68.00%Loading  69.00%Loading  71.50%Loading  72.00%Loading  72.50%Loading  73.50%Loading  74.50%Loading  75.50%Loading  76.50%Loading  78.50%Loading  79.50%Loading  80.00%Loading  80.50%Loading  81.50%Loading  82.00%Loading  82.50%Loading  83.00%Loading  84.00%Loading  85.00%Loading  86.00%Loading  87.00%Loading  89.50%Loading  90.50%Loading  92.50%Loading  93.00%Loading  94.00%Loading  95.50%Loading  96.50%Loading  97.00%Loading  97.50%Loading  98.00%Loading  98.50%Loading  99.50%Loading 100.00%Finalizing...| % - percentage of MPI functions total time
+| Function summary for all Ranks
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|           Function              Time(sec)          Time(%)        Imbalance(sec)          Imbalance(%)       Volume(MB)        Volume(%)             Calls
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------
+             MPI_Alltoallv       1011346.42            96.59             581941.51                55.58        4317652.26            99.98           3815040
+                MPI_Reduce         27898.94             2.66              27796.24                 2.65              9.71             0.00            524352
+                MPI_Gather          3751.94             0.36               3751.60                 0.36              0.05             0.00              6144
+               MPI_Barrier          1789.55             0.17               1775.96                 0.17              0.00             0.00              6336
+                 MPI_Bcast          1344.60             0.13               1043.41                 0.10            760.76             0.02             13440
+             MPI_Allreduce           864.15             0.08                371.52                 0.04              1.38             0.00            173184
+                  MPI_Init            52.83             0.01                  0.00                 0.00              0.00             0.00               192
+               MPI_Gatherv            24.55             0.00                 12.72                 0.00              8.88             0.00              6144
+              MPI_Cart_sub             3.57             0.00                  0.00                 0.00              0.00             0.00               384
+           MPI_Cart_create             3.34             0.00                  0.00                 0.00              0.00             0.00               576
+              MPI_Comm_dup             2.88             0.00                  0.00                 0.00              0.00             0.00               384
+       MPI_Comm_test_inter             2.23             0.00                  0.00                 0.00              0.00             0.00           4518144
+              MPI_Finalize             1.50             0.00                  0.00                 0.00              0.00             0.00               192
+             MPI_Comm_rank             1.21             0.00                  0.00                 0.00              0.00             0.00           4525824
+             MPI_Comm_size             1.15             0.00                  0.00                 0.00              0.00             0.00           4518560
+              MPI_Cart_get             0.26             0.00                  0.00                 0.00              0.00             0.00             86592
+             MPI_Comm_free             0.05             0.00                  0.00                 0.00              0.00             0.00               384
+             MPI_Type_size             0.00             0.00                  0.00                 0.00              0.00             0.00               192
+            MPI_Cart_shift             0.00             0.00                  0.00                 0.00              0.00             0.00              1152
+             MPI_Finalized             0.00             0.00                  0.00                 0.00              0.00             0.00               384
+           MPI_Cart_coords             0.00             0.00                  0.00                 0.00              0.00             0.00               192
+|===========================================================================================================================================================
+| TOTAL                          1047089.18           100.00             616692.96                58.90        4318433.05           100.00          18197792
+

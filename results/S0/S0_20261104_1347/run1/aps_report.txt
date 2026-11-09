@@ -1,0 +1,91 @@
+Loading   0.0%Loading  12.00%Loading  12.50%Loading  13.00%Loading  13.50%Loading  14.00%Loading  14.50%Loading  15.00%Loading  15.50%Loading  16.00%Loading  16.50%Loading  17.00%Loading  17.50%Loading  18.00%Loading  18.50%Loading  19.00%Loading  19.50%Loading  20.00%Loading  21.00%Loading  21.50%Loading  22.00%Loading  22.50%Loading  23.00%Loading  23.50%Loading  24.00%Loading  24.50%Loading  25.00%Loading  25.50%Loading  26.00%Loading  26.50%Loading  27.00%Loading  27.50%Loading  28.50%Loading  29.00%Loading  29.50%Loading  30.50%Loading  31.00%Loading  31.50%Loading  32.00%Loading  33.00%Loading  34.00%Loading  35.00%Loading  35.50%Loading  36.00%Loading  36.50%Loading  37.00%Loading  37.50%Loading  38.00%Loading  38.50%Loading  39.00%Loading  40.50%Loading  41.00%Loading  41.50%Loading  42.00%Loading  42.50%Loading  43.00%Loading  43.50%Loading  44.00%Loading  44.50%Loading  45.00%Loading  45.50%Loading  46.00%Loading  46.50%Loading  47.50%Loading  48.00%Loading  48.50%Loading  49.00%Loading  49.50%Loading  50.00%Loading  51.00%Loading  51.50%Loading  52.00%Loading  52.50%Loading  53.50%Loading  54.00%Loading  54.50%Loading  55.00%Loading  55.50%Loading  56.50%Loading  57.00%Loading  57.50%Loading  58.00%Loading  58.50%Loading  59.00%Loading  59.50%Loading  60.00%Loading  60.50%Loading  61.00%Loading  61.50%Loading  62.00%Loading  62.50%Loading  63.00%Loading  63.50%Loading  64.00%Loading  64.50%Loading  65.00%Loading  65.50%Loading  66.00%Loading  67.00%Loading  67.50%Loading  68.00%Loading  68.50%Loading  69.00%Loading  70.00%Loading  70.50%Loading  71.00%Loading  71.50%Loading  72.00%Loading  72.50%Loading  73.00%Loading  73.50%Loading  74.00%Loading  74.50%Loading  75.00%Loading  75.50%Loading  76.50%Loading  77.50%Loading  78.00%Loading  79.00%Loading  80.00%Loading  80.50%Loading  81.50%Loading  82.00%Loading  82.50%Loading  83.00%Loading  83.50%Loading  84.00%Loading  84.50%Loading  85.00%Loading  85.50%Loading  86.00%Loading  87.00%Loading  87.50%Loading  88.00%Loading  88.50%Loading  89.00%Loading  89.50%Loading  90.00%Loading  91.00%Loading  91.50%Loading  92.50%Loading  93.00%Loading  93.50%Loading  94.00%Loading  94.50%Loading  95.00%Loading  95.50%Loading  96.00%Loading  96.50%Loading  97.00%Loading  97.50%Loading  98.00%Loading  98.50%Loading  99.00%Loading  99.50%Loading 100.00%Finalizing...| Summary information
+|--------------------------------------------------------------------
+  Application                   : xcompact3d
+  Report creation date          : 2026-11-04 13:47:37
+  Number of ranks               : 192
+  Ranks per node                : 24
+  HW Platform                   : Intel(R) microarchitecture code named Raptorlake-DT
+  Frequency                     : 2.11 GHz
+  Logical core count per node   : 24
+  Collector type                : Driverless Perf system-wide counting
+  Used statistics               : /users/btech/ckundans23/ugp/runs/S0/S0_20261104_1347/run1/aps
+|
+| Your application might underutilize the available logical CPU cores
+| because of insufficient parallel work, blocking on synchronization, or too much I/O. Perform function or source line-level profiling with tools like Intel(R) VTune(TM) Profiler to discover why the CPU is underutilized.
+|
+  Elapsed Time:                            6130.32 s
+  SP GFLOPS:                                  0.23
+  DP GFLOPS:                                  1.78
+  Average CPU Frequency:                      3.10 GHz
+  IPC Rate:                                   1.34
+  MPI Time:                                6052.10 s            98.74% of Elapsed Time
+| Your application is MPI bound. This may be caused by high busy wait time
+| inside the library (imbalance), non-optimal communication schema or MPI
+| library settings. Explore the MPI Imbalance metric if it is available or use
+| MPI profiling tools like Intel(R) Trace Analyzer and Collector to explore
+| possible performance bottlenecks.
+    MPI Imbalance:                            N/A*
+| * No information about MPI Imbalance time is available. Set APS_IMBALANCE_TYPE
+| to 1 or 2 to collect it.
+    Top 5 MPI functions (avg time):
+        MPI_Alltoallv:                     5777.62 s            94.26% of Elapsed Time
+        MPI_Reduce:                         165.33 s             2.70% of Elapsed Time
+        MPI_Allreduce:                      102.59 s             1.67% of Elapsed Time
+        MPI_Init:                             5.83 s             0.10% of Elapsed Time
+        MPI_Cart_sub:                         0.47 s             0.01% of Elapsed Time
+  Physical Core Utilization:                 84.61%
+  Average Physical Core Utilization:         13.54 out of 16 Physical Cores
+  Memory Stalls:                             10.31% of Pipeline Slots
+    Cache Stalls:                            28.74% of Cycles
+| A significant proportion of cycles are spent on data fetches from cache. Use
+| Intel(R) VTune(TM) Profiler Memory Access analysis to see if accesses to L2 or
+| L3 cache are problematic and consider applying the same performance tuning as
+| you would for a cache-missing workload. This may include reducing the data
+| working set size, improving data access locality, blocking or partitioning the
+| working set to fit in the lower cache levels, or exploiting hardware
+| prefetchers.
+    DRAM Stalls:                              1.27% of Cycles
+       Average DRAM Bandwidth:                 N/A
+| Data for this metric is not collected since it requires system-wide
+| performance monitoring. Make sure the sampling driver is properly installed on
+| your system:
+| https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/current/sep-driver.html.
+| Otherwise, enable a driverless Perf-based sampling collection by setting the
+| /proc/sys/kernel/perf_even_paranoid value to 0 or less.
+  Vectorization:                             39.30%
+| A significant fraction of floating point arithmetic instructions are scalar.
+| Use Intel Advisor to see possible reasons why the code was not vectorized.
+     Instruction Mix:
+       SP FLOPs:                              0.00% of uOps
+       DP FLOPs:                              0.20% of uOps
+          Packed:                            38.40% from DP FP
+             128-bit:                        38.40%
+| A significant fraction of floating point arithmetic vector instructions
+| executed with partial vector load. A possible reason is compilation with a
+| legacy instruction set. Check the compiler options. Another possible reason is
+| compiler code generation specifics. Use Intel(R) Advisor to learn more.
+             256-bit:                         0.00%
+          Scalar:                            61.60% from DP FP
+| A significant fraction of floating point arithmetic instructions are scalar.
+| Use Intel(R) Advisor to see possible reasons why the code was not vectorized.
+       Non-FP:                               99.80% of uOps
+ Disk I/O Bound:                              0.00 s             0.00% of Elapsed Time
+      Disk read:                               0.3 KB
+      Disk write:                              0.0 KB
+ Memory Footprint:
+ Resident:
+       Per node:
+           Peak resident set size    :         5113.00 MB (node csews163)
+           Average resident set size :         5051.88 MB
+       Per rank:
+           Peak resident set size    :          219.00 MB (rank 184)
+           Average resident set size :          210.49 MB
+ Virtual:
+       Per node:
+           Peak memory consumption    :         9502.00 MB (node csews167)
+           Average memory consumption :         9408.62 MB
+       Per rank:
+           Peak memory consumption    :          400.00 MB (rank 191)
+           Average memory consumption :          392.03 MB
+
+Graphical representation of this data is available in the HTML report: /users/btech/ckundans23/ugp/runs/S0/S0_20261104_1347/aps_report_20261104_153037.html

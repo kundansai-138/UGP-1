@@ -1,0 +1,12 @@
+FFTW_DIR ?= /users/btech/ckundans23/ugp/install
+A2_DIR ?= /users/btech/ckundans23/ugp/install
+A2_MOD ?= /users/btech/ckundans23/ugp/install/include/adios2/fortran
+FOPT ?= -O2 -g -fno-omit-frame-pointer
+FFLAGS = $(FOPT) -ffree-line-length-none -fallow-argument-mismatch -I$(FFTW_DIR)/include -I$(A2_MOD)
+LDFLAGS = -L$(FFTW_DIR)/lib -Wl,-rpath,$(FFTW_DIR)/lib -lfftw3_mpi -lfftw3 -L$(A2_DIR)/lib -Wl,-rpath,$(A2_DIR)/lib -ladios2_fortran_mpi -ladios2_fortran -lm
+TARGET = streamingSPOD
+SRC = streamingSPODModule.o
+$(TARGET): $(SRC)
+	$(FLINKER) $(FFLAGS) -o $(TARGET) $(SRC) $(SLEPC_SYS_LIB) $(LDFLAGS)
+
+include ${SLEPC_DIR}/lib/slepc/conf/slepc_common

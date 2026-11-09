@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!-- snapshots (solution-io) as SST stream "data" for streaming SPOD; everything else BP4 -->
+<adios-config>
+  <io name="solution-io">
+    <engine type="SST">
+      <!-- the solver waits at start until 1 reader (SPOD) has connected -->
+      <parameter key="RendezvousReaderCount" value="1"/>
+      <!-- at most 2 snapshots buffered on the writer; then the solver waits for SPOD -->
+      <parameter key="QueueLimit" value="2"/>
+      <parameter key="QueueFullPolicy" value="Block"/>
+      <!-- TCP sockets over the normal 1 GbE network -->
+      <parameter key="DataTransport" value="WAN"/>
+      <!-- every csews machine also has docker0: advertise and use eno1 only -->
+      <parameter key="NetworkInterface" value="eno1"/>
+      <!-- reader side: wait up to 1 h for the writer to appear -->
+      <parameter key="OpenTimeoutSecs" value="3600"/>
+    </engine>
+  </io>
+  <io name="BC-lock-exchange-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="in-outflow-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="restart-forces-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="restart-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="statistics-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="turb-io">
+    <engine type="BP4"/>
+  </io>
+</adios-config>

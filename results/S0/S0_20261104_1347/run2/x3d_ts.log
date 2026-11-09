@@ -1,0 +1,14 @@
+1793786438.762018134 # START run2
+1793786439.216 vtune: Warning: Cannot collect GPU hardware metrics due to a lack of permissions. Use root privileges (recommended) or re-configure your current permissions to make sure you are a member of the render group and /proc/sys/dev/i915/perf_stream_paranoid value is set to 0.
+1793786439.289 Authorization required, but no authorization protocol specified
+1793786573.606 ssh: connect to host csews163 port 22: Connection timed out
+1793786573.608 ssh: connect to host csews165 port 22: Connection timed out
+1793786573.608 ssh: connect to host csews166 port 22: Connection timed out
+1793786573.608 ssh: connect to host csews162 port 22: Connection timed out
+1793786573.608 ssh: connect to host csews164 port 22: Connection timed out
+1793786573.608 ssh: connect to host csews167 port 22: Connection timed out
+1793786573.608 [mpiexec@csews160] ui_cmd_cb (mpiexec/pmiserv_pmci.c:51): Launch proxy failed.
+1793786573.608 [mpiexec@csews160] HYDT_dmxu_poll_wait_for_event (lib/tools/demux/demux_poll.c:76): callback returned error status
+1793786573.608 [mpiexec@csews160] HYD_pmci_wait_for_completion (mpiexec/pmiserv_pmci.c:173): error waiting for event
+1793786573.608 [mpiexec@csews160] main (mpiexec/mpiexec.c:260): process manager error waiting for completion
+1793786573.610781154 # END rc=255

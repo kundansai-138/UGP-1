@@ -1,0 +1,389 @@
+run folder : /users/btech/ckundans23/ugp/runs/S4/S4_r4x12_20261108_1809
+writer     : 192 ranks on csews160 csews161 csews162 csews163 csews164 csews165 csews166 csews167 (APS)
+reader     : 48 ranks on csews168 csews169 csews170 csews171 (APS)
+CPU pins   : writer none, reader none
+case       : 301x301x301, ilast 150, ioutput 5 -> 31 snapshots
+SPOD       : /users/btech/ckundans23/ugp/build/spod-adios2/streamingSPOD, var ux, points 27270901, IO solution-io, nDFT 8, overlap 4 -> 6 block(s), k 3
+changes to input.i3d:
+date    : 2026-11-08T18:09:57+05:30
+writer  : /users/btech/ckundans23/ugp/src/x3d_lab_adios/xcompact3d (md5 a1dad1fb55fb0decc6e3095d2d041add)
+reader  : /users/btech/ckundans23/ugp/build/spod-adios2/streamingSPOD (md5 9b1001b8a917bb9652e4f8331a14f84d)
+launch  : W /usr/local/bin/mpirun -f /users/btech/ckundans23/ugp/tools/hostfile -np 192 -ppn 24 | R /usr/local/bin/mpirun -f /users/btech/ckundans23/ugp/tools/hostfile_spod -np 48 -ppn 12
+SPOD    : NSNAP 31 NDFT 8 OVERLAP 4 K 3 NSAVE 2 VARS [ux uy uz pp]
+pins    : writer none reader none (taskset -c)
+aps     : writer 1 reader 1, APS_IMBALANCE_TYPE 2, APS_STAT_LEVEL 2
+wait    : reader 1 writer 1 /users/btech/ckundans23/ugp/tools/libadios2_wait.so (md5 31ee967bcbea4fb5cf9a57c07142fec5)
+case fs : nfs    nfs2.cse.iitk.ac.in:/cse21/btech
+--- writer libraries
+	libadios2_fortran_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran_mpi.so.2.10 (0x00007afbc60e0000)
+	libadios2_fortran.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran.so.2.10 (0x00007afbc5fea000)
+	libmpifort.so.12 => /usr/local/lib/libmpifort.so.12 (0x00007afbc5fa1000)
+	libadios2_c_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c_mpi.so.2.10 (0x00007afbc5f56000)
+	libadios2_c.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c.so.2.10 (0x00007afbc5f13000)
+	libadios2_core.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core.so.2.10 (0x00007afbc4a5c000)
+	libmpi.so.12 => /usr/local/lib/libmpi.so.12 (0x00007afbc3600000)
+	libadios2_core_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core_mpi.so.2.10 (0x00007afbc5952000)
+	libadios2_perfstubs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_perfstubs.so.2.10 (0x00007afbc5f0b000)
+	libadios2_evpath.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_evpath.so.2.10 (0x00007afbc58d6000)
+	libadios2_ffs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_ffs.so.2.10 (0x00007afbc586b000)
+	libadios2_atl.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_atl.so.2.10 (0x00007afbc5efc000)
+	libadios2_dill.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_dill.so.2.10 (0x00007afbc54aa000)
+--- reader libraries
+	libslepc.so.3.22 => /users/btech/ckundans23/ugp/src/slepc/arch-complex-opt/lib/libslepc.so.3.22 (0x00007dfbe31b9000)
+	libpetsc.so.3.22 => /users/btech/ckundans23/ugp/src/petsc/arch-complex-opt/lib/libpetsc.so.3.22 (0x00007dfbe1499000)
+	libmpifort.so.12 => /usr/local/lib/libmpifort.so.12 (0x00007dfbe1352000)
+	libfftw3_mpi.so.3 => /users/btech/ckundans23/ugp/install/lib/libfftw3_mpi.so.3 (0x00007dfbe133a000)
+	libfftw3.so.3 => /users/btech/ckundans23/ugp/install/lib/libfftw3.so.3 (0x00007dfbe0ed6000)
+	libadios2_fortran_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran_mpi.so.2.10 (0x00007dfbe1335000)
+	libadios2_fortran.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran.so.2.10 (0x00007dfbe0de0000)
+	libmpi.so.12 => /usr/local/lib/libmpi.so.12 (0x00007dfbdf600000)
+	libadios2_c_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c_mpi.so.2.10 (0x00007dfbe12fd000)
+	libadios2_c.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c.so.2.10 (0x00007dfbe0c5a000)
+	libadios2_core.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core.so.2.10 (0x00007dfbdea5c000)
+	libadios2_core_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core_mpi.so.2.10 (0x00007dfbe087c000)
+	libadios2_perfstubs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_perfstubs.so.2.10 (0x00007dfbe12db000)
+	libadios2_evpath.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_evpath.so.2.10 (0x00007dfbdf584000)
+	libadios2_ffs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_ffs.so.2.10 (0x00007dfbdf519000)
+	libadios2_atl.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_atl.so.2.10 (0x00007dfbe086d000)
+	libadios2_dill.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_dill.so.2.10 (0x00007dfbdf49b000)
+--- input (S4)
+p_row=0               ! Row partition
+p_col=0               ! Column partition
+nx=301                ! X-direction nodes 		241, 481, 481
+ny=301                ! Y-direction nodes		240, 480, 960
+nz=301                ! Z-direction nodes		240, 480, 960
+ilast = 150        ! Last iteration
+iibm=3                ! Flag for immersed boundary method
+icheckpoint = 151  ! Frequency for writing backup file		1000
+ioutput = 5         ! Frequency for visualization			500
+ilist = 1            ! Frequency for writing to screen 	50       
+ nraf=10			!10  ! level of refinement for (iibm=2 0r iibm=4) to find the surface of the immersed object
+--- solution-io engine
+    <engine type="SST">
+--- machines (name, cpu, logical cpus, RAM GB, network card speed Mb/s, load average)
+csews160 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.01 0.02 0.50
+csews161 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.00 0.00 0.48
+csews162 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.00 0.00 0.47
+csews163 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.00 0.00 0.49
+csews164 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.00 0.02 0.49
+csews165 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.00 0.00 0.47
+csews166 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.00 0.01 0.47
+csews167 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.00 0.01 0.48
+csews168 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.14 0.16 0.70
+csews169 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.18 1.20 5.62
+csews170 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.00 1.15 5.62
+csews171 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.01 1.17 5.62
+
+=== run 1 of 2 (S4: SST -> SPOD) ===
+run1: writer rc 0, SPOD rc 0, 5528.3 s
+
+=== run 2 of 2 (S4: SST -> SPOD) ===
+run2: writer rc 0, SPOD rc 0, 5504.0 s
+
+=== summary ===
+                run              readers            writer_rc              spod_rc               wall_s          sst_ready_s               init_s               loop_s                end_s          spod_wall_s  spod_after_writer_s                steps            snapshots        step_median_s    snap_step_extra_s           step_max_s   mem_peak_writer_gb   mem_peak_reader_gb        mem_peak_host
+               run1                 4x12                    0                    0              5528.25                 6.01                11.74              5463.74                52.77              5663.15                140.9                  150                   31               35.236                4.413               42.388                  9.0                 24.8             csews170
+               run2                 4x12                    0                    0              5504.02                 6.02                13.62              5431.74                58.67              5650.43               152.43                  150                   31               34.987                4.457               42.367                 9.02                24.93             csews170
+
+S4 result, reader 4x12 (median of 2 runs): wall 5516.1 s, plain step 35.1115 s, extra per snapshot step 4.435 s
+
+--- SPOD timing lines (run1, last 12)
+   Processing Block
+   Processing Block Realization           1
+   Processing Block Realization           2
+   Processing Block Realization           3
+   Processing Block Realization           4
+   Processing Block Realization           5
+   Processing Block Realization           6
+   Processing Block Realization           7
+   Processing Block Realization           8
+   DONE : Processing Block
+   Max over ranks, wait in begin_step [s]:    5221.8053178209993
+   Max over ranks, SPOD compute    [s]:    86.860972114002379
+
+--- SPOD timing lines (run2, last 12)
+   Processing Block
+   Processing Block Realization           1
+   Processing Block Realization           2
+   Processing Block Realization           3
+   Processing Block Realization           4
+   Processing Block Realization           5
+   Processing Block Realization           6
+   Processing Block Realization           7
+   Processing Block Realization           8
+   DONE : Processing Block
+   Max over ranks, wait in begin_step [s]:    5181.8752249209974
+   Max over ranks, SPOD compute    [s]:    90.079840921997288
+
+=== reader / writer wait (per snapshot) ===
+Reader wait analysis: /users/btech/ckundans23/ugp/runs/S4/S4_r4x12_20261108_1809  (layout 4x12)
+
+run1: 31 snapshots, 48 reader ranks, 192 writer ranks (engine data)
+  reader wait  first 1.0 s (includes solver start-up), then per snapshot median 176.10 s, max 181.27 s, total 5217.4 s
+  reader busy  read 6.621 s (max 8.792), compute 0.468 s (max 13.911), last snapshot 0.25 s
+  reader idle  94.8 %   headroom 24.7x   rank spread of wait 0.059 s
+  writer       end_step median 0.585 s, max 2.316 s, total 21.61 s; close 5.21 s; queue time 0.018 s
+  bursts       6 block end(s) (found from log): max 13.91 s vs ordinary 0.467 s; mean removal max 2.19 s, frequency loop max 10.83 s
+               snapshot interval T 178.8 s (writer), QueueLimit 2 -> absorbs read + burst up to 536.3 s; QueueLimit needed >= 1; smallest margin 515.5 s; writer end_step after a burst max 1.920 s
+               step    7: compute 11.69 s (mean removal 1.97, frequency loop 7.98), read 6.86 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.920 s
+               step   11: compute 11.97 s (mean removal 1.92, frequency loop 8.51), read 6.65 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.538 s
+               step   16: compute 12.10 s (mean removal 1.94, frequency loop 9.28), read 6.93 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.527 s
+               step   20: compute 13.57 s (mean removal 2.19, frequency loop 10.50), read 6.40 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.739 s
+               step   25: compute 13.89 s (mean removal 2.14, frequency loop 10.64), read 6.31 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.632 s
+               step   29: compute 13.91 s (mean removal 1.90, frequency loop 10.83), read 6.90 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.332 s
+
+run2: 31 snapshots, 48 reader ranks, 192 writer ranks (engine data)
+  reader wait  first 0.9 s (includes solver start-up), then per snapshot median 174.05 s, max 180.28 s, total 5177.5 s
+  reader busy  read 6.846 s (max 9.027), compute 0.467 s (max 14.793), last snapshot 0.25 s
+  reader idle  94.6 %   headroom 24.1x   rank spread of wait 0.061 s
+  writer       end_step median 0.709 s, max 2.078 s, total 23.31 s; close 5.20 s; queue time 0.017 s
+  bursts       6 block end(s) (found from log): max 14.79 s vs ordinary 0.467 s; mean removal max 2.32 s, frequency loop max 11.57 s
+               snapshot interval T 177.9 s (writer), QueueLimit 2 -> absorbs read + burst up to 533.8 s; QueueLimit needed >= 1; smallest margin 512.1 s; writer end_step after a burst max 2.078 s
+               step    7: compute 11.02 s (mean removal 2.32, frequency loop 7.08), read 7.44 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.850 s
+               step   11: compute 12.63 s (mean removal 1.93, frequency loop 9.81), read 6.11 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.844 s
+               step   16: compute 13.80 s (mean removal 1.94, frequency loop 10.33), read 6.28 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.773 s
+               step   20: compute 14.79 s (mean removal 1.94, frequency loop 11.57), read 6.88 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.558 s
+               step   25: compute 14.64 s (mean removal 1.92, frequency loop 11.15), read 6.55 s, needs QueueLimit >= 1, absorbed, writer end_step after 2.078 s
+               step   29: compute 13.83 s (mean removal 1.93, frequency loop 10.58), read 7.11 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.488 s
+
+COMPARISON (median over runs; wait/read = median per snapshot after the first; compute = ordinary snapshots; burst = block-end snapshots)
+             S4 folder    layout      runs     ranks     snaps  wait/snap s    read s  compute s    idle %  headroom x    bursts  burst max s  Q needed  W end_step s  W end_step max
+S4_r4x12_20261108_1809      4x12         2        48        31       175.08     6.734      0.467      94.7        24.4         6        14.35         1         0.647           2.197
+
+Wait times  : /users/btech/ckundans23/ugp/runs/S4/S4_r4x12_20261108_1809/wait_summary.txt, wait_steps.csv (per snapshot), run*/wait/*.csv (per rank)
+APS reports : /users/btech/ckundans23/ugp/runs/S4/S4_r4x12_20261108_1809/run*/aps_report.txt (Xcompact3d), /users/btech/ckundans23/ugp/runs/S4/S4_r4x12_20261108_1809/run*/aps_spod_report.txt (SPOD), *_mpi_per_rank.txt, *_mpi_functions.txt
+SPOD output : /users/btech/ckundans23/ugp/runs/S4/S4_r4x12_20261108_1809/run*/spod/
+All results : /users/btech/ckundans23/ugp/runs/S4/S4_r4x12_20261108_1809
+run folder : /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120
+writer     : 192 ranks on csews160 csews161 csews162 csews163 csews164 csews165 csews166 csews167 (APS)
+reader     : 32 ranks on csews168 csews169 csews170 csews171 (APS)
+CPU pins   : writer none, reader none
+case       : 301x301x301, ilast 150, ioutput 5 -> 31 snapshots
+SPOD       : /users/btech/ckundans23/ugp/build/spod-adios2/streamingSPOD, var ux, points 27270901, IO solution-io, nDFT 8, overlap 4 -> 6 block(s), k 3
+changes to input.i3d:
+date    : 2026-11-08T21:20:24+05:30
+writer  : /users/btech/ckundans23/ugp/src/x3d_lab_adios/xcompact3d (md5 a1dad1fb55fb0decc6e3095d2d041add)
+reader  : /users/btech/ckundans23/ugp/build/spod-adios2/streamingSPOD (md5 9b1001b8a917bb9652e4f8331a14f84d)
+launch  : W /usr/local/bin/mpirun -f /users/btech/ckundans23/ugp/tools/hostfile -np 192 -ppn 24 | R /usr/local/bin/mpirun -f /users/btech/ckundans23/ugp/tools/hostfile_spod -np 32 -ppn 8
+SPOD    : NSNAP 31 NDFT 8 OVERLAP 4 K 3 NSAVE 2 VARS [ux uy uz pp]
+pins    : writer none reader none (taskset -c)
+aps     : writer 1 reader 1, APS_IMBALANCE_TYPE 2, APS_STAT_LEVEL 2
+wait    : reader 1 writer 1 /users/btech/ckundans23/ugp/tools/libadios2_wait.so (md5 31ee967bcbea4fb5cf9a57c07142fec5)
+case fs : nfs    nfs2.cse.iitk.ac.in:/cse21/btech
+--- writer libraries
+	libadios2_fortran_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran_mpi.so.2.10 (0x00007e523e02b000)
+	libadios2_fortran.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran.so.2.10 (0x00007e523df35000)
+	libmpifort.so.12 => /usr/local/lib/libmpifort.so.12 (0x00007e523deec000)
+	libadios2_c_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c_mpi.so.2.10 (0x00007e523dcea000)
+	libadios2_c.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c.so.2.10 (0x00007e523d992000)
+	libadios2_core.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core.so.2.10 (0x00007e523ca5c000)
+	libmpi.so.12 => /usr/local/lib/libmpi.so.12 (0x00007e523b600000)
+	libadios2_core_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core_mpi.so.2.10 (0x00007e523d8c8000)
+	libadios2_perfstubs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_perfstubs.so.2.10 (0x00007e523dce0000)
+	libadios2_evpath.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_evpath.so.2.10 (0x00007e523d84c000)
+	libadios2_ffs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_ffs.so.2.10 (0x00007e523d595000)
+	libadios2_atl.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_atl.so.2.10 (0x00007e523d83d000)
+	libadios2_dill.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_dill.so.2.10 (0x00007e523d494000)
+--- reader libraries
+	libslepc.so.3.22 => /users/btech/ckundans23/ugp/src/slepc/arch-complex-opt/lib/libslepc.so.3.22 (0x0000774664079000)
+	libpetsc.so.3.22 => /users/btech/ckundans23/ugp/src/petsc/arch-complex-opt/lib/libpetsc.so.3.22 (0x0000774662359000)
+	libmpifort.so.12 => /usr/local/lib/libmpifort.so.12 (0x00007746622f9000)
+	libfftw3_mpi.so.3 => /users/btech/ckundans23/ugp/install/lib/libfftw3_mpi.so.3 (0x00007746622e1000)
+	libfftw3.so.3 => /users/btech/ckundans23/ugp/install/lib/libfftw3.so.3 (0x0000774661def000)
+	libadios2_fortran_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran_mpi.so.2.10 (0x00007746622dc000)
+	libadios2_fortran.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran.so.2.10 (0x0000774661cf9000)
+	libmpi.so.12 => /usr/local/lib/libmpi.so.12 (0x0000774660600000)
+	libadios2_c_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c_mpi.so.2.10 (0x0000774661c79000)
+	libadios2_c.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c.so.2.10 (0x0000774661c38000)
+	libadios2_core.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core.so.2.10 (0x000077465fa5c000)
+	libadios2_core_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core_mpi.so.2.10 (0x00007746604d8000)
+	libadios2_perfstubs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_perfstubs.so.2.10 (0x0000774661871000)
+	libadios2_evpath.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_evpath.so.2.10 (0x000077465f9e0000)
+	libadios2_ffs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_ffs.so.2.10 (0x000077465f975000)
+	libadios2_atl.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_atl.so.2.10 (0x00007746604c9000)
+	libadios2_dill.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_dill.so.2.10 (0x000077465f921000)
+--- input (S4)
+p_row=0               ! Row partition
+p_col=0               ! Column partition
+nx=301                ! X-direction nodes 		241, 481, 481
+ny=301                ! Y-direction nodes		240, 480, 960
+nz=301                ! Z-direction nodes		240, 480, 960
+ilast = 150        ! Last iteration
+iibm=3                ! Flag for immersed boundary method
+icheckpoint = 151  ! Frequency for writing backup file		1000
+ioutput = 5         ! Frequency for visualization			500
+ilist = 1            ! Frequency for writing to screen 	50       
+ nraf=10			!10  ! level of refinement for (iibm=2 0r iibm=4) to find the surface of the immersed object
+--- solution-io engine
+    <engine type="SST">
+--- machines (name, cpu, logical cpus, RAM GB, network card speed Mb/s, load average)
+csews160 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.67 11.57 19.01
+csews161 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.65 11.63 19.06
+csews162 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.83 11.86 19.16
+csews163 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.61 11.53 18.99
+csews164 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.62 11.54 18.99
+csews165 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.66 11.58 19.02
+csews166 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.69 11.55 18.99
+csews167 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.63 11.56 19.02
+csews168 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 4.10 9.09 10.21
+csews169 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 3.88 9.39 10.93
+csews170 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 3.85 9.41 10.95
+csews171 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 3.88 9.40 10.91
+
+=== run 1 of 2 (S4: SST -> SPOD) ===
+run1: writer rc 0, SPOD rc 0, 5539.6 s
+
+=== run 2 of 2 (S4: SST -> SPOD) ===
+run2: writer rc 0, SPOD rc 0, 8447.1 s
+
+=== summary ===
+                run              readers            writer_rc              spod_rc               wall_s          sst_ready_s               init_s               loop_s                end_s          spod_wall_s  spod_after_writer_s                steps            snapshots        step_median_s    snap_step_extra_s           step_max_s   mem_peak_writer_gb   mem_peak_reader_gb        mem_peak_host
+               run1                  4x8                    0                    0              5539.64                 6.01                11.91              5477.81                49.93              5772.74               239.11                  150                   31               35.413                4.586               43.881                  9.0                24.86             csews170
+               run2                  4x8                    0                    0              8447.14                14.03                23.86              8349.11                74.17              8671.21                238.1                  150                   31               53.823                7.785               70.996                 8.94                24.89             csews170
+
+S4 result, reader 4x8 (median of 2 runs): wall 6993.4 s, plain step 44.6180 s, extra per snapshot step 6.186 s
+
+--- SPOD timing lines (run1, last 12)
+   Processing Block
+   Processing Block Realization           1
+   Processing Block Realization           2
+   Processing Block Realization           3
+   Processing Block Realization           4
+   Processing Block Realization           5
+   Processing Block Realization           6
+   Processing Block Realization           7
+   Processing Block Realization           8
+   DONE : Processing Block
+   Max over ranks, wait in begin_step [s]:    5226.1836788099999
+   Max over ranks, SPOD compute    [s]:    81.902447078000478
+
+--- SPOD timing lines (run2, last 12)
+   Processing Block
+   Processing Block Realization           1
+   Processing Block Realization           2
+   Processing Block Realization           3
+   Processing Block Realization           4
+   Processing Block Realization           5
+   Processing Block Realization           6
+   Processing Block Realization           7
+   Processing Block Realization           8
+   DONE : Processing Block
+   Max over ranks, wait in begin_step [s]:    8076.7434332050016
+   Max over ranks, SPOD compute    [s]:    83.886996432997421
+
+=== reader / writer wait (per snapshot) ===
+Reader wait analysis: /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120  (layout 4x8)
+
+run1: 31 snapshots, 32 reader ranks, 192 writer ranks (engine data)
+  reader wait  first 0.9 s (includes solver start-up), then per snapshot median 174.84 s, max 186.70 s, total 5224.8 s
+  reader busy  read 6.767 s (max 9.129), compute 0.507 s (max 13.084), last snapshot 0.29 s
+  reader idle  94.7 %   headroom 24.7x   rank spread of wait 0.007 s
+  writer       end_step median 0.645 s, max 1.928 s, total 20.92 s; close 5.22 s; queue time 0.005 s
+  bursts       6 block end(s) (found from log): max 13.08 s vs ordinary 0.504 s; mean removal max 2.48 s, frequency loop max 9.96 s
+               snapshot interval T 178.2 s (writer), QueueLimit 2 -> absorbs read + burst up to 534.5 s; QueueLimit needed >= 1; smallest margin 514.0 s; writer end_step after a burst max 1.928 s
+               step    7: compute 10.62 s (mean removal 2.06, frequency loop 7.07), read 7.24 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.736 s
+               step   11: compute 10.99 s (mean removal 1.86, frequency loop 7.37), read 6.12 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.928 s
+               step   16: compute 11.68 s (mean removal 2.02, frequency loop 8.54), read 8.90 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.674 s
+               step   20: compute 12.56 s (mean removal 2.08, frequency loop 9.36), read 7.35 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.858 s
+               step   25: compute 13.08 s (mean removal 2.48, frequency loop 9.32), read 7.06 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.683 s
+               step   29: compute 12.91 s (mean removal 2.06, frequency loop 9.96), read 6.83 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.096 s
+
+run2: 31 snapshots, 32 reader ranks, 192 writer ranks (engine data)
+  reader wait  first 1.5 s (includes solver start-up), then per snapshot median 269.87 s, max 286.08 s, total 8072.0 s
+  reader busy  read 8.420 s (max 9.452), compute 0.508 s (max 13.480), last snapshot 0.29 s
+  reader idle  96.0 %   headroom 30.5x   rank spread of wait 0.009 s
+  writer       end_step median 1.239 s, max 6.572 s, total 43.84 s; close 7.31 s; queue time 0.007 s
+  bursts       6 block end(s) (found from log): max 13.48 s vs ordinary 0.506 s; mean removal max 2.30 s, frequency loop max 10.11 s
+               snapshot interval T 273.3 s (writer), QueueLimit 2 -> absorbs read + burst up to 820.0 s; QueueLimit needed >= 1; smallest margin 798.0 s; writer end_step after a burst max 6.572 s
+               step    7: compute 10.76 s (mean removal 2.27, frequency loop 7.01), read 7.07 s, needs QueueLimit >= 1, absorbed, writer end_step after 3.945 s
+               step   11: compute 10.62 s (mean removal 2.30, frequency loop 7.23), read 8.72 s, needs QueueLimit >= 1, absorbed, writer end_step after 2.602 s
+               step   16: compute 12.78 s (mean removal 1.91, frequency loop 9.53), read 8.23 s, needs QueueLimit >= 1, absorbed, writer end_step after 2.015 s
+               step   20: compute 13.13 s (mean removal 2.07, frequency loop 9.94), read 8.88 s, needs QueueLimit >= 1, absorbed, writer end_step after 6.572 s
+               step   25: compute 13.48 s (mean removal 2.07, frequency loop 10.11), read 8.54 s, needs QueueLimit >= 1, absorbed, writer end_step after 3.134 s
+               step   29: compute 11.97 s (mean removal 1.86, frequency loop 9.24), read 8.95 s, needs QueueLimit >= 1, absorbed, writer end_step after 2.945 s
+
+COMPARISON (median over runs; wait/read = median per snapshot after the first; compute = ordinary snapshots; burst = block-end snapshots)
+            S4 folder    layout      runs     ranks     snaps  wait/snap s    read s  compute s    idle %  headroom x    bursts  burst max s  Q needed  W end_step s  W end_step max
+S4_r4x8_20261108_2120       4x8         2        32        31       222.36     7.594      0.505      95.4        27.6         6        13.28         1         0.942           4.250
+
+Wait times  : /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120/wait_summary.txt, wait_steps.csv (per snapshot), run*/wait/*.csv (per rank)
+APS reports : /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120/run*/aps_report.txt (Xcompact3d), /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120/run*/aps_spod_report.txt (SPOD), *_mpi_per_rank.txt, *_mpi_functions.txt
+SPOD output : /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120/run*/spod/
+All results : /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120
+run folder : /users/btech/ckundans23/ugp/runs/S4/S4_r4x4_20261109_0123
+writer     : 192 ranks on csews160 csews161 csews162 csews163 csews164 csews165 csews166 csews167 (APS)
+reader     : 16 ranks on csews168 csews169 csews170 csews171 (APS)
+CPU pins   : writer none, reader none
+case       : 301x301x301, ilast 150, ioutput 5 -> 31 snapshots
+SPOD       : /users/btech/ckundans23/ugp/build/spod-adios2/streamingSPOD, var ux, points 27270901, IO solution-io, nDFT 8, overlap 4 -> 6 block(s), k 3
+changes to input.i3d:
+date    : 2026-11-09T01:23:45+05:30
+writer  : /users/btech/ckundans23/ugp/src/x3d_lab_adios/xcompact3d (md5 a1dad1fb55fb0decc6e3095d2d041add)
+reader  : /users/btech/ckundans23/ugp/build/spod-adios2/streamingSPOD (md5 9b1001b8a917bb9652e4f8331a14f84d)
+launch  : W /usr/local/bin/mpirun -f /users/btech/ckundans23/ugp/tools/hostfile -np 192 -ppn 24 | R /usr/local/bin/mpirun -f /users/btech/ckundans23/ugp/tools/hostfile_spod -np 16 -ppn 4
+SPOD    : NSNAP 31 NDFT 8 OVERLAP 4 K 3 NSAVE 2 VARS [ux uy uz pp]
+pins    : writer none reader none (taskset -c)
+aps     : writer 1 reader 1, APS_IMBALANCE_TYPE 2, APS_STAT_LEVEL 2
+wait    : reader 1 writer 1 /users/btech/ckundans23/ugp/tools/libadios2_wait.so (md5 31ee967bcbea4fb5cf9a57c07142fec5)
+case fs : nfs    nfs2.cse.iitk.ac.in:/cse21/btech
+--- writer libraries
+	libadios2_fortran_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran_mpi.so.2.10 (0x0000729bbbdf2000)
+	libadios2_fortran.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran.so.2.10 (0x0000729bbbcfc000)
+	libmpifort.so.12 => /usr/local/lib/libmpifort.so.12 (0x0000729bbbcb3000)
+	libadios2_c_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c_mpi.so.2.10 (0x0000729bbbb81000)
+	libadios2_c.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c.so.2.10 (0x0000729bbbb3e000)
+	libadios2_core.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core.so.2.10 (0x0000729bba85c000)
+	libmpi.so.12 => /usr/local/lib/libmpi.so.12 (0x0000729bb9400000)
+	libadios2_core_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core_mpi.so.2.10 (0x0000729bbb681000)
+	libadios2_perfstubs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_perfstubs.so.2.10 (0x0000729bbbaee000)
+	libadios2_evpath.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_evpath.so.2.10 (0x0000729bbb384000)
+	libadios2_ffs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_ffs.so.2.10 (0x0000729bbb319000)
+	libadios2_atl.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_atl.so.2.10 (0x0000729bbbadf000)
+	libadios2_dill.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_dill.so.2.10 (0x0000729bba785000)
+--- reader libraries
+	libslepc.so.3.22 => /users/btech/ckundans23/ugp/src/slepc/arch-complex-opt/lib/libslepc.so.3.22 (0x0000780baa814000)
+	libpetsc.so.3.22 => /users/btech/ckundans23/ugp/src/petsc/arch-complex-opt/lib/libpetsc.so.3.22 (0x0000780ba8af4000)
+	libmpifort.so.12 => /usr/local/lib/libmpifort.so.12 (0x0000780ba86d0000)
+	libfftw3_mpi.so.3 => /users/btech/ckundans23/ugp/install/lib/libfftw3_mpi.so.3 (0x0000780ba86b8000)
+	libfftw3.so.3 => /users/btech/ckundans23/ugp/install/lib/libfftw3.so.3 (0x0000780ba858e000)
+	libadios2_fortran_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran_mpi.so.2.10 (0x0000780ba8589000)
+	libadios2_fortran.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran.so.2.10 (0x0000780ba8493000)
+	libmpi.so.12 => /usr/local/lib/libmpi.so.12 (0x0000780ba6e00000)
+	libadios2_c_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c_mpi.so.2.10 (0x0000780ba845d000)
+	libadios2_c.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c.so.2.10 (0x0000780ba807a000)
+	libadios2_core.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core.so.2.10 (0x0000780ba625c000)
+	libadios2_core_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core_mpi.so.2.10 (0x0000780ba61da000)
+	libadios2_perfstubs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_perfstubs.so.2.10 (0x0000780ba8069000)
+	libadios2_evpath.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_evpath.so.2.10 (0x0000780ba6c82000)
+	libadios2_ffs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_ffs.so.2.10 (0x0000780ba616f000)
+	libadios2_atl.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_atl.so.2.10 (0x0000780ba6160000)
+	libadios2_dill.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_dill.so.2.10 (0x0000780ba60e2000)
+--- input (S4)
+p_row=0               ! Row partition
+p_col=0               ! Column partition
+nx=301                ! X-direction nodes 		241, 481, 481
+ny=301                ! Y-direction nodes		240, 480, 960
+nz=301                ! Z-direction nodes		240, 480, 960
+ilast = 150        ! Last iteration
+iibm=3                ! Flag for immersed boundary method
+icheckpoint = 151  ! Frequency for writing backup file		1000
+ioutput = 5         ! Frequency for visualization			500
+ilist = 1            ! Frequency for writing to screen 	50       
+ nraf=10			!10  ! level of refinement for (iibm=2 0r iibm=4) to find the surface of the immersed object
+--- solution-io engine
+    <engine type="SST">
+--- machines (name, cpu, logical cpus, RAM GB, network card speed Mb/s, load average)
+csews160 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.25 8.65 17.35
+csews161 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.15 8.55 17.25
+csews162 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.17 8.58 17.25
+csews163 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.13 8.55 17.25
+csews164 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.32 8.60 17.27
+csews165 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.15 8.56 17.26
+csews166 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.13 8.41 17.16
+csews167 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.12 8.38 17.15
+csews168 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 1.86 5.70 6.61
+csews169 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 2.05 6.04 7.26
+csews170 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 1.57 5.73 7.14
+csews171 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 1.60 5.74 7.13
+
+=== run 1 of 2 (S4: SST -> SPOD) ===

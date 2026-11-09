@@ -1,0 +1,35 @@
+2026-11-09 01:43:35 === 0 compare 301^3: node-local /users/btech/ckundans23/spod-dev/runs/S4_coloc_nl/S4_r8x4_20261108_2253/run1/spod vs old reader /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120/run2/spod
+    EnegySpectra.txt: 15 values, max rel diff 3.03e-07
+    mode 1: |cos angle| = 0.999999609759479, max rel diff after phase alignment 3.29e-02  (SPODMODE_freq_1_sigma_ 0.33004E+02.dat vs SPODMODE_freq_1_sigma_ 0.33004E+02.dat)
+    mode 2: |cos angle| = 0.999999778551015, max rel diff after phase alignment 2.52e-02  (SPODMODE_freq_2_sigma_ 0.32396E+02.dat vs SPODMODE_freq_2_sigma_ 0.32396E+02.dat)
+    mode 3: missing in one run
+    mode 4: missing in one run
+    mode 5: missing in one run
+    RESULTS DIFFER
+    (different Xcompact3d grids 10x16 vs 12x16: expect rounding-level, not bitwise, agreement;
+     modes 3-5 exist only in the old run)
+2026-11-09 01:44:47 deleted the 301^3 mode files in both folders (EnegySpectra.txt kept)
+2026-11-09 01:44:47 deleted the cut-off r4x4 folder S4_r4x4_20261109_0123
+2026-11-09 01:44:47 === 1 r4x4: start  RPPN=4
+2026-11-09 03:20:09 === 1 r4x4: end rc=0 after 95 min; All results : /users/btech/ckundans23/ugp/runs/S4/S4_r4x4_20261109_0144 (7.3M)
+    run1: removed 10 SPOD mode file(s), 8.7 GB (kept the 0 leading mode(s); spectrum kept)
+    run1: writer rc 0, SPOD rc 0, 5530.5 s
+2026-11-09 03:20:09 === 2 coloc_old: start  WPPN=20 RPPN=4 RHOSTS=/users/btech/ckundans23/ugp/tools/hostfile WPIN=0-19 RPIN=20-23 RUNROOT=/users/btech/ckundans23/ugp/runs/S4_coloc
+2026-11-09 05:16:33 === 2 coloc_old: end rc=0 after 116 min; All results : /users/btech/ckundans23/ugp/runs/S4_coloc/S4_r8x4_20261109_0320 (3.3G)
+    run1: removed 10 SPOD mode file(s), 8.7 GB (kept the 0 leading mode(s); spectrum kept)
+    run1: writer rc 0, SPOD rc 0, 6668.3 s
+2026-11-09 05:16:33 === 3 coloc_nl: start  WPPN=20 RPPN=4 WHOSTS=/users/btech/ckundans23/ugp/tools/hostfile RHOSTS=/users/btech/ckundans23/ugp/tools/hostfile WPIN=0-19 RPIN=20-23 RUNROOT=/users/btech/ckundans23/spod-dev/runs/S4_coloc_nl
+2026-11-09 07:10:37 === 3 coloc_nl: end rc=0 after 114 min; All results : /users/btech/ckundans23/spod-dev/runs/S4_coloc_nl/S4_r8x4_20261109_0516 (6.4M)
+    run1: Xcompact3d grid 10x16 = reader grid
+    run1: removed 10 SPOD mode file(s), 8.7 GB (kept the 0 leading mode(s); spectrum kept)
+    run1: writer rc 0, SPOD rc 0, 6654.6 s
+2026-11-09 07:10:37 === 4 sep_old: start  WPPN=20 RPPN=8 WPIN=0-19 RUNROOT=/users/btech/ckundans23/ugp/runs/S4_sep160
+2026-11-09 09:05:48 === 4 sep_old: end rc=0 after 115 min; All results : /users/btech/ckundans23/ugp/runs/S4_sep160/S4_r4x8_20261109_0710 (7.5M)
+    run1: removed 10 SPOD mode file(s), 8.7 GB (kept the 0 leading mode(s); spectrum kept)
+    run1: writer rc 0, SPOD rc 0, 6719.0 s
+2026-11-09 09:05:48 === 5 sep_nl: start  WPPN=20 RPPN=8 WPIN=0-19 WHOSTS=/users/btech/ckundans23/ugp/tools/hostfile RHOSTS=/users/btech/ckundans23/ugp/tools/hostfile_spod RUNROOT=/users/btech/ckundans23/spod-dev/runs/S4_sep_nl
+2026-11-09 11:01:32 === 5 sep_nl: end rc=0 after 115 min; All results : /users/btech/ckundans23/spod-dev/runs/S4_sep_nl/S4_r4x8_20261109_0905 (7.6M)
+    run1: Xcompact3d grid 10x16 = reader grid
+    run1: removed 10 SPOD mode file(s), 8.7 GB (kept the 0 leading mode(s); spectrum kept)
+    run1: writer rc 0, SPOD rc 0, 6694.5 s
+2026-11-09 11:01:32 === queue finished

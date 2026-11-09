@@ -1,0 +1,68 @@
+date    : 2026-11-08T21:20:24+05:30
+writer  : /users/btech/ckundans23/ugp/src/x3d_lab_adios/xcompact3d (md5 a1dad1fb55fb0decc6e3095d2d041add)
+reader  : /users/btech/ckundans23/ugp/build/spod-adios2/streamingSPOD (md5 9b1001b8a917bb9652e4f8331a14f84d)
+launch  : W /usr/local/bin/mpirun -f /users/btech/ckundans23/ugp/tools/hostfile -np 192 -ppn 24 | R /usr/local/bin/mpirun -f /users/btech/ckundans23/ugp/tools/hostfile_spod -np 32 -ppn 8
+SPOD    : NSNAP 31 NDFT 8 OVERLAP 4 K 3 NSAVE 2 VARS [ux uy uz pp]
+pins    : writer none reader none (taskset -c)
+aps     : writer 1 reader 1, APS_IMBALANCE_TYPE 2, APS_STAT_LEVEL 2
+wait    : reader 1 writer 1 /users/btech/ckundans23/ugp/tools/libadios2_wait.so (md5 31ee967bcbea4fb5cf9a57c07142fec5)
+case fs : nfs    nfs2.cse.iitk.ac.in:/cse21/btech
+--- writer libraries
+	libadios2_fortran_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran_mpi.so.2.10 (0x00007e523e02b000)
+	libadios2_fortran.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran.so.2.10 (0x00007e523df35000)
+	libmpifort.so.12 => /usr/local/lib/libmpifort.so.12 (0x00007e523deec000)
+	libadios2_c_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c_mpi.so.2.10 (0x00007e523dcea000)
+	libadios2_c.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c.so.2.10 (0x00007e523d992000)
+	libadios2_core.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core.so.2.10 (0x00007e523ca5c000)
+	libmpi.so.12 => /usr/local/lib/libmpi.so.12 (0x00007e523b600000)
+	libadios2_core_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core_mpi.so.2.10 (0x00007e523d8c8000)
+	libadios2_perfstubs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_perfstubs.so.2.10 (0x00007e523dce0000)
+	libadios2_evpath.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_evpath.so.2.10 (0x00007e523d84c000)
+	libadios2_ffs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_ffs.so.2.10 (0x00007e523d595000)
+	libadios2_atl.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_atl.so.2.10 (0x00007e523d83d000)
+	libadios2_dill.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_dill.so.2.10 (0x00007e523d494000)
+--- reader libraries
+	libslepc.so.3.22 => /users/btech/ckundans23/ugp/src/slepc/arch-complex-opt/lib/libslepc.so.3.22 (0x0000774664079000)
+	libpetsc.so.3.22 => /users/btech/ckundans23/ugp/src/petsc/arch-complex-opt/lib/libpetsc.so.3.22 (0x0000774662359000)
+	libmpifort.so.12 => /usr/local/lib/libmpifort.so.12 (0x00007746622f9000)
+	libfftw3_mpi.so.3 => /users/btech/ckundans23/ugp/install/lib/libfftw3_mpi.so.3 (0x00007746622e1000)
+	libfftw3.so.3 => /users/btech/ckundans23/ugp/install/lib/libfftw3.so.3 (0x0000774661def000)
+	libadios2_fortran_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran_mpi.so.2.10 (0x00007746622dc000)
+	libadios2_fortran.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_fortran.so.2.10 (0x0000774661cf9000)
+	libmpi.so.12 => /usr/local/lib/libmpi.so.12 (0x0000774660600000)
+	libadios2_c_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c_mpi.so.2.10 (0x0000774661c79000)
+	libadios2_c.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_c.so.2.10 (0x0000774661c38000)
+	libadios2_core.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core.so.2.10 (0x000077465fa5c000)
+	libadios2_core_mpi.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_core_mpi.so.2.10 (0x00007746604d8000)
+	libadios2_perfstubs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_perfstubs.so.2.10 (0x0000774661871000)
+	libadios2_evpath.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_evpath.so.2.10 (0x000077465f9e0000)
+	libadios2_ffs.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_ffs.so.2.10 (0x000077465f975000)
+	libadios2_atl.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_atl.so.2.10 (0x00007746604c9000)
+	libadios2_dill.so.2.10 => /users/btech/ckundans23/ugp/install/lib/libadios2_dill.so.2.10 (0x000077465f921000)
+--- input (S4)
+p_row=0               ! Row partition
+p_col=0               ! Column partition
+nx=301                ! X-direction nodes 		241, 481, 481
+ny=301                ! Y-direction nodes		240, 480, 960
+nz=301                ! Z-direction nodes		240, 480, 960
+ilast = 150        ! Last iteration
+iibm=3                ! Flag for immersed boundary method
+icheckpoint = 151  ! Frequency for writing backup file		1000
+ioutput = 5         ! Frequency for visualization			500
+ilist = 1            ! Frequency for writing to screen 	50       
+ nraf=10			!10  ! level of refinement for (iibm=2 0r iibm=4) to find the surface of the immersed object
+--- solution-io engine
+    <engine type="SST">
+--- machines (name, cpu, logical cpus, RAM GB, network card speed Mb/s, load average)
+csews160 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.67 11.57 19.01
+csews161 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.65 11.63 19.06
+csews162 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.83 11.86 19.16
+csews163 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.61 11.53 18.99
+csews164 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.62 11.54 18.99
+csews165 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.66 11.58 19.02
+csews166 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.69 11.55 18.99
+csews167 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 0.63 11.56 19.02
+csews168 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 4.10 9.09 10.21
+csews169 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 3.88 9.39 10.93
+csews170 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 3.85 9.41 10.95
+csews171 | 13th Gen Intel(R) Core(TM) i7-13700 | 24 | 31.0 | eno1 1000 | 3.88 9.40 10.91

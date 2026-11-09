@@ -1,0 +1,2 @@
+run,readers,writer_rc,spod_rc,wall_s,sst_ready_s,init_s,loop_s,end_s,spod_wall_s,spod_after_writer_s,steps,snapshots,step_median_s,snap_step_extra_s,step_max_s,mem_peak_writer_gb,mem_peak_reader_gb,mem_peak_host
+run1,8x4,0,0,6654.59,6.01,15.24,6567.68,71.67,6791.9,143.33,150,31,42.843,5.767,50.366,19.33,19.33,csews160

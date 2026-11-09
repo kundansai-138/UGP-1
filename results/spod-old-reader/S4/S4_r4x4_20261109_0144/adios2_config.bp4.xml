@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- all output as BP4 files (written by setup_adios_case.sh) -->
+<adios-config>
+  <io name="BC-lock-exchange-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="in-outflow-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="restart-forces-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="restart-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="solution-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="statistics-io">
+    <engine type="BP4"/>
+  </io>
+  <io name="turb-io">
+    <engine type="BP4"/>
+  </io>
+</adios-config>

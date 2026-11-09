@@ -1,0 +1,12 @@
+diff --git a/cmake/decomp2d/downloadBuild2decomp.cmake.in b/cmake/decomp2d/downloadBuild2decomp.cmake.in
+index cd42b88..a3d3ced 100644
+--- a/cmake/decomp2d/downloadBuild2decomp.cmake.in
++++ b/cmake/decomp2d/downloadBuild2decomp.cmake.in
+@@ -9,6 +9,7 @@ include(ExternalProject)
+ ExternalProject_Add(downloadBuild2decomp
+     GIT_REPOSITORY    "https://github.com/xcompact3d/2decomp-fft"
+     GIT_TAG           "v2.0.4"
++  CMAKE_ARGS        -DIO_BACKEND=@IO_BACKEND@ -DADIOS2_DIR=@ADIOS2_DIR@
+     SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/decomp2d-src"
+     INSTALL_DIR       "${CMAKE_CURRENT_BINARY_DIR}/decomp2d-opt"
+     TEST_COMMAND      ""

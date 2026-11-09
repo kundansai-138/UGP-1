@@ -1,0 +1,30 @@
+Reader wait analysis: /users/btech/ckundans23/ugp/runs/S4/S4_r4x8_20261108_2120  (layout 4x8)
+
+run1: 31 snapshots, 32 reader ranks, 192 writer ranks (engine data)
+  reader wait  first 0.9 s (includes solver start-up), then per snapshot median 174.84 s, max 186.70 s, total 5224.8 s
+  reader busy  read 6.767 s (max 9.129), compute 0.507 s (max 13.084), last snapshot 0.29 s
+  reader idle  94.7 %   headroom 24.7x   rank spread of wait 0.007 s
+  writer       end_step median 0.645 s, max 1.928 s, total 20.92 s; close 5.22 s; queue time 0.005 s
+  bursts       6 block end(s) (found from log): max 13.08 s vs ordinary 0.504 s; mean removal max 2.48 s, frequency loop max 9.96 s
+               snapshot interval T 178.2 s (writer), QueueLimit 2 -> absorbs read + burst up to 534.5 s; QueueLimit needed >= 1; smallest margin 514.0 s; writer end_step after a burst max 1.928 s
+               step    7: compute 10.62 s (mean removal 2.06, frequency loop 7.07), read 7.24 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.736 s
+               step   11: compute 10.99 s (mean removal 1.86, frequency loop 7.37), read 6.12 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.928 s
+               step   16: compute 11.68 s (mean removal 2.02, frequency loop 8.54), read 8.90 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.674 s
+               step   20: compute 12.56 s (mean removal 2.08, frequency loop 9.36), read 7.35 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.858 s
+               step   25: compute 13.08 s (mean removal 2.48, frequency loop 9.32), read 7.06 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.683 s
+               step   29: compute 12.91 s (mean removal 2.06, frequency loop 9.96), read 6.83 s, needs QueueLimit >= 1, absorbed, writer end_step after 1.096 s
+
+run2: 31 snapshots, 32 reader ranks, 192 writer ranks (engine data)
+  reader wait  first 1.5 s (includes solver start-up), then per snapshot median 269.87 s, max 286.08 s, total 8072.0 s
+  reader busy  read 8.420 s (max 9.452), compute 0.508 s (max 13.480), last snapshot 0.29 s
+  reader idle  96.0 %   headroom 30.5x   rank spread of wait 0.009 s
+  writer       end_step median 1.239 s, max 6.572 s, total 43.84 s; close 7.31 s; queue time 0.007 s
+  bursts       6 block end(s) (found from log): max 13.48 s vs ordinary 0.506 s; mean removal max 2.30 s, frequency loop max 10.11 s
+               snapshot interval T 273.3 s (writer), QueueLimit 2 -> absorbs read + burst up to 820.0 s; QueueLimit needed >= 1; smallest margin 798.0 s; writer end_step after a burst max 6.572 s
+               step    7: compute 10.76 s (mean removal 2.27, frequency loop 7.01), read 7.07 s, needs QueueLimit >= 1, absorbed, writer end_step after 3.945 s
+               step   11: compute 10.62 s (mean removal 2.30, frequency loop 7.23), read 8.72 s, needs QueueLimit >= 1, absorbed, writer end_step after 2.602 s
+               step   16: compute 12.78 s (mean removal 1.91, frequency loop 9.53), read 8.23 s, needs QueueLimit >= 1, absorbed, writer end_step after 2.015 s
+               step   20: compute 13.13 s (mean removal 2.07, frequency loop 9.94), read 8.88 s, needs QueueLimit >= 1, absorbed, writer end_step after 6.572 s
+               step   25: compute 13.48 s (mean removal 2.07, frequency loop 10.11), read 8.54 s, needs QueueLimit >= 1, absorbed, writer end_step after 3.134 s
+               step   29: compute 11.97 s (mean removal 1.86, frequency loop 9.24), read 8.95 s, needs QueueLimit >= 1, absorbed, writer end_step after 2.945 s
+

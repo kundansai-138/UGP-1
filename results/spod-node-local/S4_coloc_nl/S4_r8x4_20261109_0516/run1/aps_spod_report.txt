@@ -1,0 +1,103 @@
+Loading   0.0%Loading  60.00%Loading  62.50%Loading  67.50%Loading  70.00%Loading  72.50%Loading  75.00%Loading  77.50%Loading  80.00%Loading  82.50%Loading  87.50%Loading  95.00%Loading 100.00%Finalizing...| Summary information
+|--------------------------------------------------------------------
+  Application                   : spod_nl
+  Report creation date          : 2026-11-09 05:16:47
+  Number of ranks               : 32
+  Ranks per node                : 4
+  HW Platform                   : Intel(R) microarchitecture code named Raptorlake-DT
+  Frequency                     : 2.11 GHz
+  Logical core count per node   : 24
+  Collector type                : Driverless Perf system-wide counting
+  Used statistics               : /users/btech/ckundans23/spod-dev/runs/S4_coloc_nl/S4_r8x4_20261109_0516/run1/aps_spod
+|
+| Your application might underutilize the available logical CPU cores
+| because of insufficient parallel work, blocking on synchronization, or too much I/O. Perform function or source line-level profiling with tools like Intel(R) VTune(TM) Profiler to discover why the CPU is underutilized.
+|
+  Elapsed Time:                            6783.36 s
+  SP GFLOPS:                                  0.00
+  DP GFLOPS:                                  1.88
+  IPC Rate:                                   2.24
+  MPI Time:                                6483.35 s            95.78% of Elapsed Time
+| Your application is MPI bound. This may be caused by high busy wait time
+| inside the library (imbalance), non-optimal communication schema or MPI
+| library settings. Explore the MPI Imbalance metric if it is available or use
+| MPI profiling tools like Intel(R) Trace Analyzer and Collector to explore
+| possible performance bottlenecks.
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Time" reports for details.
+    MPI Imbalance:                         6360.63 s            93.97% of Elapsed Time
+| The application workload is not well balanced between MPI ranks.For more
+| details about the MPI communication scheme use Intel(R) Trace Analyzer and
+| Collector.
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Imbalance" reports for details.
+    Top 5 MPI functions (avg time):
+        MPI_Bcast:                         6341.46 s            93.68% of Elapsed Time
+| Some of the individual values contributing to this average metric are
+| statistical outliers that can significantly distort the average metric value.
+| They can also be a cause of performance degradation.
+| Please use --counters or --metrics="MPI Hotspot 1 - MPI_Bcast" reports for
+| details.
+        MPI_Send:                            55.05 s             0.81% of Elapsed Time
+        MPI_Waitall:                         54.29 s             0.80% of Elapsed Time
+        MPI_Allgather:                       14.24 s             0.21% of Elapsed Time
+        MPI_Barrier:                          8.06 s             0.12% of Elapsed Time
+  Physical Core Utilization:                  0.00%
+| The metric is below 80% threshold, which may signal a poor physical CPU cores
+| utilization caused by: load imbalance, threading runtime overhead, contended
+| synchronization, insufficient parallelism, incorrect affinity that utilizes
+| logical cores instead of physical cores. Perform threading analysis with tools
+| like Intel(R) VTune(TM) Profiler to discover why physical cores are
+| underutilized.
+  Average Physical Core Utilization:          0.00 out of 16 Physical Cores
+  Memory Stalls:                              6.10% of Pipeline Slots
+    Cache Stalls:                            17.02% of Cycles
+    DRAM Stalls:                              1.26% of Cycles
+       Average DRAM Bandwidth:                 N/A
+| Data for this metric is not collected since it requires system-wide
+| performance monitoring. Make sure the sampling driver is properly installed on
+| your system:
+| https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/current/sep-driver.html.
+| Otherwise, enable a driverless Perf-based sampling collection by setting the
+| /proc/sys/kernel/perf_even_paranoid value to 0 or less.
+  Vectorization:                             39.58%
+| A significant fraction of floating point arithmetic instructions are scalar.
+| Use Intel Advisor to see possible reasons why the code was not vectorized.
+     Instruction Mix:
+       SP FLOPs:                              0.00% of uOps
+       DP FLOPs:                              0.20% of uOps
+          Packed:                            39.58% from DP FP
+             128-bit:                        39.58%
+| A significant fraction of floating point arithmetic vector instructions
+| executed with partial vector load. A possible reason is compilation with a
+| legacy instruction set. Check the compiler options. Another possible reason is
+| compiler code generation specifics. Use Intel(R) Advisor to learn more.
+             256-bit:                         0.00%
+          Scalar:                            60.42% from DP FP
+| A significant fraction of floating point arithmetic instructions are scalar.
+| Use Intel(R) Advisor to see possible reasons why the code was not vectorized.
+       Non-FP:                               99.80% of uOps
+ Disk I/O Bound:                              0.01 s             0.00% of Elapsed Time
+      Disk read:                             423.2 MB
+      Disk write:                             35.7 KB
+ Memory Footprint:
+ Resident:
+       Per node:
+           Peak resident set size    :        11699.00 MB (node csews160)
+           Average resident set size :        11347.38 MB
+       Per rank:
+           Peak resident set size    :         3343.00 MB (rank 0)
+           Average resident set size :         2836.84 MB
+ Virtual:
+       Per node:
+           Peak memory consumption    :        12666.00 MB (node csews160)
+           Average memory consumption :        12256.00 MB
+       Per rank:
+           Peak memory consumption    :         3637.00 MB (rank 0)
+           Average memory consumption :         3064.00 MB
+
+Graphical representation of this data is available in the HTML report: /users/btech/ckundans23/spod-dev/runs/S4_coloc_nl/S4_r8x4_20261109_0516/aps_report_20261109_071037.html
